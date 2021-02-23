@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.salesManagementSystem.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="cn.salesManagementSystem.entity.User">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="store_id" jdbcType="BIGINT" property="storeId"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="enable_status" jdbcType="INTEGER" property="enableStatus"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+        <result column="store" jdbcType="VARCHAR" property="store"/>
+    </resultMap>
+
+    <!--查询用户列表的语句，非系统管理员只能查询本门店数据-->
+    <select id="getUserList" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT tu.*, tr.name AS role, ts.name store
+        FROM t_user tu
+                 LEFT JOIN t_role tr ON tu.role_id = tr.id
+                 LEFT JOIN t_store ts ON tu.store_id = ts.id
+        <where>
+            <if test="roleId != 1">
+                AND tu.store_id = #{storeId}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
