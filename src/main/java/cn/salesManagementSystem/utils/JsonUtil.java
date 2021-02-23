@@ -9,8 +9,17 @@ import java.util.List;
  * @author yty
  */
 public class JsonUtil {
-    public static String listToNewLayJson(String[] fields, List<?> data, int count) throws Exception {
+    /**
+     * 将list转换为layui风格的json
+     *
+     * @param fields String数组形式的字段列表
+     * @param data   传入的列表，内容需要为javaBean格式的类
+     * @return 返回转换好的json
+     * @throws Exception 传入的字段列表或list内的对象格式不对抛出异常
+     */
+    public static String listToLayJson(String[] fields, List<?> data) throws Exception {
         StringBuilder re = new StringBuilder();
+        int count = data.size();
         re.append("{\"code\":0,\"msg\":\"获取成功\",\"count\":");
         re.append(count);
         re.append(",\"data\":[");
@@ -27,30 +36,6 @@ public class JsonUtil {
         return re.toString();
     }
 
-
-    /**
-     * 将list转换为layui风格的json
-     *
-     * @param fields String数组形式的字段列表
-     * @param data   传入的列表，内容需要为javaBean格式的类
-     * @return 返回转换好的json
-     * @throws Exception 传入的字段列表或list内的对象格式不对抛出异常
-     */
-    public static String listToLayJson(String[] fields, List<?> data) throws Exception {
-        StringBuilder re = new StringBuilder();
-        re.append("[{\"status\":0}, {\"message\": \"成功\" }, {\"count\": 1000},{\"rows\":{\"item\":[");
-        if (data == null || data.isEmpty()) {
-            re.append("]}}]");
-            return re.toString();
-        }
-        for (Object object : data) {
-            re.append(beanToJson(fields, object));
-            re.append(',');
-        }
-        re.deleteCharAt(re.length() - 1);
-        re.append("]}}]");
-        return re.toString();
-    }
 
     /**
      * 将list转换为json
