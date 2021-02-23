@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1/bsglxt?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC&allowMultiQueries=true
+    url: jdbc:mysql://127.0.0.1/sales_management_system?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC&allowMultiQueries=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Yty350804201
@@ -18,9 +18,9 @@ spring:
       max-file-size: 10MB
       max-request-size: 30MB
 
-mybatis:
-  mapper-locations: classpath:mapping/*.xml
+mybatis-plus:
   type-aliases-package: cn.salesManagementSystem.entity
+  mapper-locations: classpath*:mybatis/*.xml
 
 #showSql
 logging:
@@ -33,4 +33,4 @@ define:
   nginx:
     path: \salesManagementSystem\file
     # 项目运行模式，模式为dev时会启用Swagger并关闭登录认证
-  model: prod
+  model: dev
