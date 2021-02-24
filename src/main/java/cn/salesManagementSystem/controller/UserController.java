@@ -3,15 +3,15 @@ package cn.salesManagementSystem.controller;
 import cn.salesManagementSystem.entity.User;
 import cn.salesManagementSystem.service.IUserService;
 import cn.salesManagementSystem.utils.JsonUtil;
+import cn.salesManagementSystem.utils.ResJson;
 import cn.salesManagementSystem.utils.UtilTools;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -21,7 +21,7 @@ import java.util.List;
  * @author 闫铁鹰
  * @program salesManagementSystem
  * @description 用户管理相关接口Controller层实现
- * @create 2021-02-24 01:00
+ * @date 2021-02-24 01:00
  **/
 
 @RestController
@@ -34,10 +34,12 @@ public class UserController {
     private IUserService userService;
     private static final String[] FIELDS = {"id", "username", "password", "roleId", "storeId", "realName", "email", "enableStatus", "createTime", "updateTime", "role", "store"};
 
-    @GetMapping
+    @ApiOperation(value = "获取用户信息列表接口")
+    @GetMapping(value = "/getUserList")
     public String getUserList(@RequestParam Integer page, @RequestParam Integer limit, HttpSession session){
-        session.setAttribute("roleId", "2");
-        session.setAttribute("storeId", "2");
+        if(UtilTools.checkLogin(session,3)){
+            return ResJson.NO_LOGIN_RETURN_JSON;
+        }
         String roleIdStr = session.getAttribute("roleId").toString();
         String storeIdStr = session.getAttribute("storeId").toString();
         IPage<User> page1 = new Page<>(page, limit);
@@ -46,7 +48,44 @@ public class UserController {
             return JsonUtil.listToLayJson(FIELDS,userList);
         }catch (Exception e){
             log.error(e);
-            return UtilTools.FAIL_RETURN_JSON;
+            return ResJson.FAIL_RETURN_JSON;
         }
     }
+
+    @ApiOperation("添加用户（注册）接口")
+    @PostMapping(value = "/addUser")
+    public String addUser(@RequestBody User user){
+        user.setPassword(UtilTools.passwordEncryption(user.getPassword(), user.getUsername()));
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userName", user.getUsername().trim());
+        int count = this.userService.count(queryWrapper);
+        if(count != 0){
+            return ResJson.DATA_ALREADY_EXISTS;
+        }else {
+            boolean flag = this.userService.addUser(user);
+            if(flag){
+                return ResJson.SUCCESS_RETURN_JSON;
+            }else {
+                return ResJson.FAIL_RETURN_JSON;
+            }
+        }
+    }
+
+    @ApiOperation("登录接口")
+    @GetMapping(value = "/login")
+    public String login(@RequestParam String username, @RequestParam String password, HttpSession session){
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.select("id", "role_id", "store_id");
+        wrapper.eq("username", username.trim());
+        wrapper.eq("password", UtilTools.passwordEncryption(password, username));
+        User user = this.userService.getOne(wrapper);
+        if(user == null){
+            return ResJson.FAIL_RETURN_JSON;
+        }
+        session.setAttribute("userId", user.getId());
+        session.setAttribute("roleId", user.getRoleId());
+        session.setAttribute("storeId", user.getStoreId());
+        return ResJson.SUCCESS_RETURN_JSON;
+    }
+
 }

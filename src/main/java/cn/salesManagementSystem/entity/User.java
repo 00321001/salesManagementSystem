@@ -3,17 +3,19 @@ package cn.salesManagementSystem.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
  * @author 闫铁鹰
  * @program salesManagementSystem
  * @description 用户实体类
- * @create 2021-02-24 00:03
+ * @date 2021-02-24 00:03
  **/
 
 @Data
 @TableName(value = "t_user")
+@ApiModel(value = "用户实体类")
 public class User {
     @TableId
     private Long id;

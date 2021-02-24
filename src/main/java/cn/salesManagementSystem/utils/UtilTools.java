@@ -1,29 +1,23 @@
 package cn.salesManagementSystem.utils;
 
+import lombok.extern.log4j.Log4j;
+
 import javax.servlet.http.HttpSession;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 
 /**
  * 工具类
  *
  * @author yty
  */
+@Log4j
 public class UtilTools {
+
     /**
-     * 参数为空的返回值
+     * 用于密码加盐的盐值
      */
-    public static final String IS_NULL_RETURN_JSON = "{\"code\":\"9999\",\"msg\":\"缺少参数\"}";
-    /**
-     * 成功的返回值
-     */
-    public static final String SUCCESS_RETURN_JSON = "{\"code\":\"0000\",\"msg\":\"操作成功\"}";
-    /**
-     * 失败的返回值
-     */
-    public static final String FAIL_RETURN_JSON = "{\"code\":\"9999\",\"msg\":\"操作失败\"}";
-    /**
-     * 没有登录的返回值
-     */
-    public static final String NO_LOGIN_RETURN_JSON = "{\"code\":\"7777\",\"msg\":\"没有登录\"}";
+    private static final String SALT = "c5bfddf4ea0f43aa8d6e1112f2536dca";
 
     /**
      * 用于判空的方法
@@ -44,32 +38,51 @@ public class UtilTools {
      * 用于检查是否登录的方法
      *
      * @param session 一个HttpSession对象
-     * @param type    期望的用户类型：0-管理员；1-教师；2-学生；3-所有登录用户；4-管理员+教师；5-教师+学生；6-管理员+学生
+     * @param type    期望的用户类型：1-系统管理员；2-门店管理员；3-系统管理员+门店管理员；4-销售人员；5-系统管理员+销售人员；6-门店管理员+销售人员；7-所有登录用户
      * @return 用户已经登录返回true，否则返回false
      */
     public static boolean checkLogin(HttpSession session, int type) {
-        String useridStr = (String) session.getAttribute("userid");
-        String userTypeStr = (String) session.getAttribute("userType");
-        if (useridStr == null || userTypeStr == null) {
+        String useridStr = (String) session.getAttribute("userId");
+        String roleIdStr = (String) session.getAttribute("roleId");
+        if (useridStr == null || roleIdStr == null) {
             return false;
         }
         switch (type) {
-            case 0:
             case 1:
             case 2:
-                return Integer.parseInt(userTypeStr) == type;
-            case 3:
-                return true;
             case 4:
-                return (Integer.parseInt(userTypeStr) == 0 || Integer.parseInt(userTypeStr) == 1);
+                return Integer.parseInt(roleIdStr) == type;
+            case 3:
+                return (Integer.parseInt(roleIdStr) == 1 || Integer.parseInt(roleIdStr) == 2);
             case 5:
-                return (Integer.parseInt(userTypeStr) == 1 || Integer.parseInt(userTypeStr) == 2);
+                return (Integer.parseInt(roleIdStr) == 1 || Integer.parseInt(roleIdStr) == 4);
             case 6:
-                return (Integer.parseInt(userTypeStr) == 0 || Integer.parseInt(userTypeStr) == 2);
+                return (Integer.parseInt(roleIdStr) == 2 || Integer.parseInt(roleIdStr) == 4);
             default:
                 return false;
         }
+    }
 
+    public static String passwordEncryption(String password, String userName){
+        password = password + userName + SALT;
+        byte[] passwordBytes = password.getBytes(StandardCharsets.UTF_8);
+        try{
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+            messageDigest.update(passwordBytes);
+            byte[] byteBuffer = messageDigest.digest();
+            StringBuilder strHexString = new StringBuilder();
+            for (byte b : byteBuffer) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    strHexString.append('0');
+                }
+                strHexString.append(hex);
+            }
+            password = strHexString.toString().toUpperCase();
+        }catch (Exception e){
+            log.error(e);
+        }
+        return password;
     }
 
 }

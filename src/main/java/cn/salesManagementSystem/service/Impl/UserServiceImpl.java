@@ -4,7 +4,6 @@ import cn.salesManagementSystem.entity.User;
 import cn.salesManagementSystem.mapper.UserMapper;
 import cn.salesManagementSystem.service.IUserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @author 闫铁鹰
  * @program salesManagementSystem
  * @description 用户管理相关接口Service层实现类
- * @create 2021-02-24 00:28
+ * @date 2021-02-24 00:28
  **/
 
 @Service
@@ -35,5 +34,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public List<User> getUserList(IPage<User> page, Long roleId, Long storeId) {
         return this.userMapper.getUserList(page, roleId, storeId);
+    }
+
+    /**
+     * 添加用户的Service层方法
+     *
+     * @param user 存储数据的用户实体类
+     * @return 受影响行数
+     */
+    @Override
+    public boolean addUser(User user) {
+        return this.userMapper.addUser(user) == 1;
     }
 }

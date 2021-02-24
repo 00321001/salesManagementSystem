@@ -10,7 +10,7 @@ import java.util.List;
  * @author 闫铁鹰
  * @program salesManagementSystem
  * @description 用户表Mapper层接口
- * @create 2021-02-24 00:16
+ * @date 2021-02-24 00:16
  **/
 public interface UserMapper extends BaseMapper<User> {
     /**
@@ -21,4 +21,11 @@ public interface UserMapper extends BaseMapper<User> {
      * @return 分好页的查询结果
      */
     List<User> getUserList(IPage<User> page, Long roleId, Long storeId);
+
+    /**
+     * 添加用户的Mapper层方法
+     * @param user 存储数据的用户实体类
+     * @return 受影响行数
+     */
+    Integer addUser(User user);
 }

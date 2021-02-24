@@ -11,7 +11,7 @@ import java.util.List;
  * @author 闫铁鹰
  * @program salesManagementSystem
  * @description 用户管理相关接口Service层接口
- * @create 2021-02-24 00:19
+ * @date 2021-02-24 00:19
  **/
 public interface IUserService extends IService<User> {
     /**
@@ -22,4 +22,11 @@ public interface IUserService extends IService<User> {
      * @return 分好页的查询结果
      */
     List<User> getUserList(IPage<User> page, Long roleId, Long storeId);
+
+    /**
+     * 添加用户的Service层方法
+     * @param user 存储数据的用户实体类
+     * @return 受影响行数
+     */
+    boolean addUser(User user);
 }
