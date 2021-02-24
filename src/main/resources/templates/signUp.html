@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <title>注册页面</title>
+    <meta content="webkit" name="renderer">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+    <link href="../static/layui/css/layui.css" media="all" rel="stylesheet">
+    <script charset="utf-8" src="../static/layui/layui.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.js"></script>
+    <script src="../static/js/signUp.js"></script>
+</head>
+
+<body style="background-image: url(../static/images/loginbackground.jpg);">
+<div
+        style="border-radius: 20px; width: 500px; height: 400px; background:rgba(62, 103, 133, 0.8); margin: auto; float: left; top: 0; left: 0; right: 0; bottom: 0; position: absolute; padding: 30px 70px 30px 0;">
+    <div style="width: 100%; height: 50px; text-align: center; font-size: 30px; line-height: 50px; padding-left: 30px">
+        欢迎注册
+    </div>
+    <form action="" class="layui-form" style="margin-top: 40px">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-reqtext="用户名是必填项，岂能为空？" lay-verify="required"
+                       name="username"
+                       placeholder="用户名" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-reqtext="密码是必填项，岂能为空？" lay-verify="required"
+                       name="password"
+                       placeholder="密码" type="password">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">真实姓名</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-reqtext="真实姓名是必填项，岂能为空？" lay-verify="required"
+                       name="realName"
+                       placeholder="真实姓名" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+                <input autocomplete="off" class="layui-input" lay-reqtext="邮箱是必填项，岂能为空？" lay-verify="required"
+                       name="email"
+                       placeholder="邮箱" type="text">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">所属门店</label>
+            <div class="layui-input-inline">
+                <select id="storeSelect" lay-search="" lay-verify="required" name="storeId">
+                </select>
+            </div>
+        </div>
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="signUp" lay-submit=""
+                    style="width: 80%; margin-left: 25px; margin-top: 10px"
+                    type="submit">注册
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+
+</html>

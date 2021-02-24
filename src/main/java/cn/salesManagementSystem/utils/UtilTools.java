@@ -25,9 +25,9 @@ public class UtilTools {
      * @param args 将参数整合为String数组传入
      * @return 有空值时返回false，没有空值返回true
      */
-    public static boolean checkNull(String[] args) {
-        for (String arg : args) {
-            if (arg == null || arg.trim().length() <= 0) {
+    public static boolean checkNull(Object[] args) {
+        for (Object arg : args) {
+            if (arg == null || arg.toString().trim().length() <= 0) {
                 return false;
             }
         }
@@ -51,22 +51,22 @@ public class UtilTools {
             case 1:
             case 2:
             case 4:
-                return Integer.parseInt(roleIdStr) == type;
+                return Long.parseLong(roleIdStr) == type;
             case 3:
-                return (Integer.parseInt(roleIdStr) == 1 || Integer.parseInt(roleIdStr) == 2);
+                return (Long.parseLong(roleIdStr) == 1 || Long.parseLong(roleIdStr) == 2);
             case 5:
-                return (Integer.parseInt(roleIdStr) == 1 || Integer.parseInt(roleIdStr) == 4);
+                return (Long.parseLong(roleIdStr) == 1 || Long.parseLong(roleIdStr) == 4);
             case 6:
-                return (Integer.parseInt(roleIdStr) == 2 || Integer.parseInt(roleIdStr) == 4);
+                return (Long.parseLong(roleIdStr) == 2 || Long.parseLong(roleIdStr) == 4);
             default:
                 return false;
         }
     }
 
-    public static String passwordEncryption(String password, String userName){
+    public static String passwordEncryption(String password, String userName) {
         password = password + userName + SALT;
         byte[] passwordBytes = password.getBytes(StandardCharsets.UTF_8);
-        try{
+        try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
             messageDigest.update(passwordBytes);
             byte[] byteBuffer = messageDigest.digest();
@@ -79,7 +79,7 @@ public class UtilTools {
                 strHexString.append(hex);
             }
             password = strHexString.toString().toUpperCase();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e);
         }
         return password;

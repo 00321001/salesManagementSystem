@@ -15,8 +15,9 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
     /**
      * 查询用户列表的Mapper层接口
-     * @param page 分页参数
-     * @param roleId 操作者角色id
+     *
+     * @param page    分页参数
+     * @param roleId  操作者角色id
      * @param storeId 操作者所属门店id
      * @return 分好页的查询结果
      */
@@ -24,6 +25,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 添加用户的Mapper层方法
+     *
      * @param user 存储数据的用户实体类
      * @return 受影响行数
      */

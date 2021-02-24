@@ -30,23 +30,26 @@ import java.util.List;
 @Api(tags = "用户管理相关接口")
 public class UserController {
 
+    private static final String[] FIELDS = {"id", "username", "roleId", "storeId", "realName", "email", "enableStatus", "createTime", "updateTime", "role", "store"};
     @Resource
     private IUserService userService;
-    private static final String[] FIELDS = {"id", "username", "password", "roleId", "storeId", "realName", "email", "enableStatus", "createTime", "updateTime", "role", "store"};
 
     @ApiOperation(value = "获取用户信息列表接口")
     @GetMapping(value = "/getUserList")
-    public String getUserList(@RequestParam Integer page, @RequestParam Integer limit, HttpSession session){
-        if(UtilTools.checkLogin(session,3)){
+    public String getUserList(@RequestParam Integer page, @RequestParam Integer limit, HttpSession session) {
+        if (!UtilTools.checkLogin(session, 3)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
+        }
+        if (!UtilTools.checkNull(new Object[]{page, limit})) {
+            return ResJson.IS_NULL_RETURN_JSON;
         }
         String roleIdStr = session.getAttribute("roleId").toString();
         String storeIdStr = session.getAttribute("storeId").toString();
         IPage<User> page1 = new Page<>(page, limit);
         List<User> userList = this.userService.getUserList(page1, Long.valueOf(roleIdStr.trim()), Long.valueOf(storeIdStr.trim()));
-        try{
-            return JsonUtil.listToLayJson(FIELDS,userList);
-        }catch (Exception e){
+        try {
+            return JsonUtil.listToLayJson(FIELDS, userList);
+        } catch (Exception e) {
             log.error(e);
             return ResJson.FAIL_RETURN_JSON;
         }
@@ -54,18 +57,21 @@ public class UserController {
 
     @ApiOperation("添加用户（注册）接口")
     @PostMapping(value = "/addUser")
-    public String addUser(@RequestBody User user){
+    public String addUser(@RequestBody User user) {
+        if (!UtilTools.checkNull(new Object[]{user.getUsername(), user.getPassword(), user.getStoreId(), user.getRealName(), user.getEmail()})) {
+            return ResJson.IS_NULL_RETURN_JSON;
+        }
         user.setPassword(UtilTools.passwordEncryption(user.getPassword(), user.getUsername()));
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userName", user.getUsername().trim());
         int count = this.userService.count(queryWrapper);
-        if(count != 0){
+        if (count != 0) {
             return ResJson.DATA_ALREADY_EXISTS;
-        }else {
+        } else {
             boolean flag = this.userService.addUser(user);
-            if(flag){
+            if (flag) {
                 return ResJson.SUCCESS_RETURN_JSON;
-            }else {
+            } else {
                 return ResJson.FAIL_RETURN_JSON;
             }
         }
@@ -73,18 +79,25 @@ public class UserController {
 
     @ApiOperation("登录接口")
     @GetMapping(value = "/login")
-    public String login(@RequestParam String username, @RequestParam String password, HttpSession session){
+    public String login(@RequestParam String username, @RequestParam String password, HttpSession session) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.select("id", "role_id", "store_id");
         wrapper.eq("username", username.trim());
         wrapper.eq("password", UtilTools.passwordEncryption(password, username));
         User user = this.userService.getOne(wrapper);
-        if(user == null){
+        if (user == null) {
             return ResJson.FAIL_RETURN_JSON;
         }
-        session.setAttribute("userId", user.getId());
-        session.setAttribute("roleId", user.getRoleId());
-        session.setAttribute("storeId", user.getStoreId());
+        session.setAttribute("userId", user.getId().toString());
+        session.setAttribute("roleId", user.getRoleId().toString());
+        session.setAttribute("storeId", user.getStoreId().toString());
+        return ResJson.SUCCESS_RETURN_JSON;
+    }
+
+    @ApiOperation("登出接口")
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpSession session) {
+        session.invalidate();
         return ResJson.SUCCESS_RETURN_JSON;
     }
 

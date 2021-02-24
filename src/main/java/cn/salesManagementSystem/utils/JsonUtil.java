@@ -1,5 +1,7 @@
 package cn.salesManagementSystem.utils;
 
+import lombok.extern.log4j.Log4j;
+
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
  *
  * @author yty
  */
+@Log4j
 public class JsonUtil {
     /**
      * 将list转换为layui风格的json
@@ -43,18 +46,22 @@ public class JsonUtil {
      * @param fields String数组形式的字段列表
      * @param data   传入的列表，内容需要为javaBean格式的类
      * @return 返回转换好的json
-     * @throws Exception 传入的字段列表或list内的对象格式不对抛出异常
      */
-    public static String listToJson(String[] fields, List<?> data) throws Exception {
+    public static String listToJson(String[] fields, List<?> data) {
         StringBuilder re = new StringBuilder();
-        re.append("{\"code\":\"0000\",\"msg\":\"成功\",\"data\":[");
+        re.append("{\"code\":200,\"msg\":\"成功\",\"data\":[");
         if (data == null || data.isEmpty()) {
             re.append("]}");
             return re.toString();
         }
         for (Object object : data) {
-            re.append(beanToJson(fields, object));
-            re.append(',');
+            try {
+                re.append(beanToJson(fields, object));
+                re.append(',');
+            } catch (Exception e) {
+                log.error(e);
+                return ResJson.FAIL_RETURN_JSON;
+            }
         }
         re.deleteCharAt(re.length() - 1);
         re.append("]}");
@@ -70,7 +77,7 @@ public class JsonUtil {
      * @throws Exception 传入的字段列表或对象格式不对抛出异常
      */
     public static String objectToJson(String[] fields, Object object) throws Exception {
-        return "{\"code\":\"0000\",\"msg\":\"成功\",\"data\":" + beanToJson(fields, object) + '}';
+        return "{\"code\":200,\"msg\":\"成功\",\"data\":" + beanToJson(fields, object) + '}';
     }
 
     /**
