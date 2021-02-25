@@ -32,7 +32,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @return 分好页的查询结果
      */
     @Override
-    public List<User> getUserList(IPage<User> page, Long roleId, Long storeId) {
+    public IPage<User> getUserList(IPage<User> page, Long roleId, Long storeId) {
         return this.userMapper.getUserList(page, roleId, storeId);
     }
 

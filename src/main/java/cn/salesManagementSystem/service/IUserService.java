@@ -21,7 +21,7 @@ public interface IUserService extends IService<User> {
      * @param storeId 操作者所属门店id
      * @return 分好页的查询结果
      */
-    List<User> getUserList(IPage<User> page, Long roleId, Long storeId);
+    IPage<User> getUserList(IPage<User> page, Long roleId, Long storeId);
 
     /**
      * 添加用户的Service层方法

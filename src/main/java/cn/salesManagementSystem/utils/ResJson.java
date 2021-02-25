@@ -13,6 +13,10 @@ public class ResJson {
      */
     public static final String IS_NULL_RETURN_JSON = "{\"code\":400,\"msg\":\"缺少参数\"}";
     /**
+     * 用户没有被启用的返回值
+     */
+    public static final String USERN_NOT_ENABLE_JSON = "{\"code\":401,\"msg\":\"用户没有被启用\"}";
+    /**
      * 成功的返回值
      */
     public static final String SUCCESS_RETURN_JSON = "{\"code\":200,\"msg\":\"操作成功\"}";
@@ -27,5 +31,5 @@ public class ResJson {
     /**
      * 数据已存在的返回值
      */
-    public static final String DATA_ALREADY_EXISTS = "{\"code\":20001,\"msg\":\"数据已存在\"}";
+    public static final String DATA_ALREADY_EXISTS_JSON = "{\"code\":20001,\"msg\":\"数据已存在\"}";
 }

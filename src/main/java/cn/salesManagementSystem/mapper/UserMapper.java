@@ -4,8 +4,6 @@ import cn.salesManagementSystem.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
-import java.util.List;
-
 /**
  * @author 闫铁鹰
  * @program salesManagementSystem
@@ -21,7 +19,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param storeId 操作者所属门店id
      * @return 分好页的查询结果
      */
-    List<User> getUserList(IPage<User> page, Long roleId, Long storeId);
+    IPage<User> getUserList(IPage<User> page, Long roleId, Long storeId);
 
     /**
      * 添加用户的Mapper层方法

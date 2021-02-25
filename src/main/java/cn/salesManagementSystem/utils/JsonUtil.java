@@ -1,5 +1,6 @@
 package cn.salesManagementSystem.utils;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.log4j.Log4j;
 
 import java.lang.reflect.Method;
@@ -20,9 +21,11 @@ public class JsonUtil {
      * @return 返回转换好的json
      * @throws Exception 传入的字段列表或list内的对象格式不对抛出异常
      */
-    public static String listToLayJson(String[] fields, List<?> data) throws Exception {
+    public static String listToLayJson(String[] fields, List<?> data, Long count) throws Exception {
         StringBuilder re = new StringBuilder();
-        int count = data.size();
+        if(count == null){
+            count = (long) data.size();
+        }
         re.append("{\"code\":0,\"msg\":\"获取成功\",\"count\":");
         re.append(count);
         re.append(",\"data\":[");

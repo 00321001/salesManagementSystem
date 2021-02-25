@@ -21,6 +21,8 @@ spring:
 mybatis-plus:
   type-aliases-package: cn.salesManagementSystem.entity
   mapper-locations: classpath*:mybatis/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #showSql
 logging:

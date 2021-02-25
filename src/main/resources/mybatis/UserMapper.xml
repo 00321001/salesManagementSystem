@@ -24,16 +24,15 @@
 
     <!--查询用户列表的语句，非系统管理员只能查询本门店数据-->
     <select id="getUserList" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        SELECT tu.username, tu.role_id, tu.store_id, tu.real_Name, tu.email, tu.enable_status, tu.create_time,
+        SELECT tu.id, tu.username, tu.role_id, tu.store_id, tu.real_Name, tu.email, tu.enable_status, tu.create_time,
         tu.update_time, tr.name AS role, ts.name store
         FROM t_user tu
         LEFT JOIN t_role tr ON tu.role_id = tr.id
         LEFT JOIN t_store ts ON tu.store_id = ts.id
-        <where>
+        WHERE 1=1
             <if test="roleId != 1">
                 AND tu.store_id = #{storeId}
             </if>
-        </where>
     </select>
 
 
