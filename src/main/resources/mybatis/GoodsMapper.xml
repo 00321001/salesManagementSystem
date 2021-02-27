@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.salesManagementSystem.mapper.GoodsMapper">
+    <resultMap id="BaseResultMap" type="cn.salesManagementSystem.entity.Goods">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="classification_id" jdbcType="BIGINT" property="classificationId"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime"/>
+        <result column="classification" jdbcType="VARCHAR" property="classification"/>
+    </resultMap>
+
+    <select id="getGoodsList" resultMap="BaseResultMap">
+        SELECT tg.*, tgc.description AS classification FROM t_goods tg LEFT JOIN t_goods_classification tgc on tgc.id = tg.classification_id
+    </select>
+    <delete id="deleteGoods" parameterType="java.lang.Long">
+        DELETE FROM t_goods WHERE id = #{id} AND (SELECT COUNT(*) FROM ref_store_goods WHERE goods_id = #{id}) = 0;
+    </delete>
+</mapper>
