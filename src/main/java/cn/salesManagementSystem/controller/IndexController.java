@@ -17,10 +17,25 @@ import javax.servlet.http.HttpSession;
  **/
 @Api(value = "页面相关接口")
 @Controller
-@RequestMapping("/")
 public class IndexController {
+    @GetMapping(value = "/")
+    public String index(HttpSession session){
+        if(!UtilTools.checkLogin(session, Constants.ROLE_ALL)){
+            return "login";
+        }
+        switch (session.getAttribute("roleId").toString()){
+            case Constants.ROLE_SUPER_ADMIN_STR:
+                return "systemAdmin";
+            case Constants.ROLE_SHOP_ADMIN_STR:
+                return "shopAdmin";
+            case Constants.ROLE_SALESMAN_STR:
+                return "salesman";
+            default:
+                return "login";
+        }
+    }
     @GetMapping(value = "/login")
-    public String index() {
+    public String login() {
         return "login";
     }
 
@@ -29,18 +44,26 @@ public class IndexController {
         return "signUp";
     }
 
-    @GetMapping(value = "/systemAdmin")
-    public String systemAdmin(HttpSession session){
-        if(UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)){
-            return "systemAdmin";
+    @GetMapping(value = "/userManage")
+    public String userManage(HttpSession session){
+        if(UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)){
+            return "userManage";
         }else {
             return "login";
         }
     }
-    @GetMapping(value = "userManage")
-    public String userManage(HttpSession session){
+    @GetMapping(value = "/storeManage")
+    public String storeManage(HttpSession session){
+        if(UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)){
+            return "storeManage";
+        }else {
+            return "login";
+        }
+    }
+    @GetMapping(value = "/goodsManage")
+    public String goodsManage(HttpSession session){
         if(UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)){
-            return "userManage";
+            return "goodsManage";
         }else {
             return "login";
         }

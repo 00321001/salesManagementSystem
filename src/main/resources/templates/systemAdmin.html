@@ -45,13 +45,13 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:" id="showUserName">
-                    <img class="layui-nav-img" src="http://t.cn/RCzsdCq">
+                    <img class="layui-nav-img" src="/static/images/tx.jpg">
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:void(0)" onclick="resetPassword()">修改密码</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="javascript:void(0);" onclick="logout()">退了</a></li>
+            <li class="layui-nav-item"><a href="javascript:void(0);" onclick="logout()">登出</a></li>
         </ul>
     </div>
 
@@ -61,19 +61,29 @@
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item"><a class="site-demo-active" data-id="1" data-title="用户信息管理" data-type="tabAdd"
                                               data-url="userManage" href="javascript:">用户信息管理</a></li>
-                <li class="layui-nav-item"><a class="site-demo-active" data-id="2" data-title="个人信息管理" data-type="tabAdd"
-                                              data-url="GoMyself" href="javascript:">发布商品</a></li>
+                <li class="layui-nav-item"><a class="site-demo-active" data-id="2" data-title="门店信息管理" data-type="tabAdd"
+                                              data-url="storeManage" href="javascript:">门店信息管理</a></li>
                 <li class="layui-nav-item">
-                    <a class="" href="javascript:">信息管理</a>
+                    <a class="" href="javascript:">商品信息管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a class="site-demo-active" data-id="3" data-title="个人信息管理" data-type="tabAdd"
-                               data-url="GoMyself" href="javascript:">个人信息管理</a></dd>
-                        <dd><a class="site-demo-active" data-id="4" data-title="公告信息管理" data-type="tabAdd"
-                               data-url="GoStudentNotice" href="javascript:">公告信息管理</a></dd>
+                        <dd><a class="site-demo-active" data-id="3" data-title="商品管理" data-type="tabAdd"
+                               data-url="goodsManage" href="javascript:">商品管理</a></dd>
+                        <dd><a class="site-demo-active" data-id="4" data-title="商品分类管理" data-type="tabAdd"
+                               data-url="goodsClassManage" href="javascript:">商品分类管理</a></dd>
+                        <dd><a class="site-demo-active" data-id="5" data-title="库存管理" data-type="tabAdd"
+                               data-url="inventoryManage" href="javascript:">库存管理</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="" href="javascript:">销售记录管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a class="site-demo-active" data-id="6" data-title="销售记录" data-type="tabAdd"
+                               data-url="recordManage" href="javascript:">销售记录</a></dd>
+                        <dd><a class="site-demo-active" data-id="7" data-title="售后服务" data-type="tabAdd"
+                               data-url="serviceManage" href="javascript:">售后服务</a></dd>
                     </dl>
                 </li>
             </ul>
-
         </div>
     </div>
 
@@ -100,9 +110,8 @@
 </div>
 <script src="../static/layui/layui.js"></script>
 <script>
-
+    getUserInfo();
     var layerIndex;
-
     function resetPassword() {
         layerIndex = layui.layer.open({
             type: 1,
@@ -114,12 +123,32 @@
             }
         });
     }
+    function getUserInfo(){
+        $.ajax({
+            type: "get", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
+            url: "/user/getUserInfo",    //传输地址的URL
+            data: {}, //data代表我们的数据  key -value类型的数据
+            dataType: 'JSON',
+            async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
+            success: function (res) {
+                if(res.code != 200){
+                    window.location.href("/login");
+                }else {
+                    var html = $("#showUserName").html();
+                    html += res.data.realName;
+                    $("#showUserName").html(html);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(typeof (errorThrown));
+            }
+        });
+    }
 
     function logout() {
-        var url = "/logout";
         $.ajax({
-            type: "get", //指定提交的类型 get对应 doGet()方法，post--->doPost()犯法
-            url: url,    //传输地址的URL
+            type: "get", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
+            url: "/user/logout",    //传输地址的URL
             data: {}, //data代表我们的数据  key -value类型的数据
             dataType: 'JSON',
             async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
@@ -144,7 +173,7 @@
         form.on('submit(resetPasswordSub)', function (data) {
             var url = "/student/resetPassword";
             $.ajax({
-                type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()犯法
+                type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
                 url: url,    //传输地址的URL
                 data: data.field, //data代表我们的数据  key -value类型的数据
                 dataType: 'JSON',

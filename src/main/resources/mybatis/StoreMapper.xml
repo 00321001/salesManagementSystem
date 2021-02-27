@@ -8,6 +8,12 @@
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
         <result column="update_time" jdbcType="VARCHAR" property="updateTime"/>
     </resultMap>
-
+    <delete id="deleteStore" parameterType="java.lang.Long">
+        DELETE
+        FROM t_store
+        WHERE id = #{id}
+          AND (SELECT COUNT(*) FROM ref_store_goods WHERE store_id = #{id}) = 0
+          AND (SELECT COUNT(*) FROM t_user WHERE store_id = #{id}) = 0;
+    </delete>
 
 </mapper>

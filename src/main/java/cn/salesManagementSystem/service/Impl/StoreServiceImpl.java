@@ -19,4 +19,15 @@ import javax.annotation.Resource;
 public class StoreServiceImpl extends ServiceImpl<StoreMapper, Store> implements IStoreService {
     @Resource
     private StoreMapper storeMapper;
+
+    /**
+     * 删除门店的Service层实现
+     *
+     * @param id 门店id
+     * @return 是否成功
+     */
+    @Override
+    public Boolean deleteStore(Long id) {
+        return this.storeMapper.deleteStore(id) == 1;
+    }
 }

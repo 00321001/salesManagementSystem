@@ -10,4 +10,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @date 2021-02-24 15:39
  **/
 public interface StoreMapper extends BaseMapper<Store> {
+    /**
+     * 删除门店的Mapper层方法
+     * @param id 门店id
+     * @return 受影响行数
+     */
+    Integer deleteStore(Long id);
 }

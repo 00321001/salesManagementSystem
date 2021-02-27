@@ -34,6 +34,7 @@ import java.util.List;
 public class UserController {
 
     private static final String[] FIELDS = {"id", "username", "roleId", "storeId", "realName", "email", "enableStatus", "createTime", "updateTime", "role", "store"};
+    private static final String[] COLUMNS = {"id", "username", "role_id", "store_id", "real_name", "email", "enable_status", "create_time", "update_time"};
     @Resource
     private IUserService userService;
 
@@ -51,12 +52,7 @@ public class UserController {
         String storeIdStr = session.getAttribute("storeId").toString();
         IPage<User> page1 = this.userService.getUserList(new Page<>(current, size), Long.valueOf(roleIdStr.trim()), Long.valueOf(storeIdStr.trim()));
         List<User> userList = page1.getRecords();
-        try {
-            return JsonUtil.listToLayJson(FIELDS, userList, page1.getTotal());
-        } catch (Exception e) {
-            log.error(e);
-            return ResJson.FAIL_RETURN_JSON;
-        }
+        return JsonUtil.listToLayJson(FIELDS, userList, page1.getTotal());
     }
 
 
@@ -84,7 +80,7 @@ public class UserController {
     }
 
     @ApiOperation("登录接口")
-    @GetMapping(value = "/login")
+    @PostMapping(value = "/login")
     public String login(@RequestParam String username, @RequestParam String password, HttpSession session) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.select("id", "role_id", "store_id", "enable_status");
@@ -110,15 +106,6 @@ public class UserController {
         return ResJson.SUCCESS_RETURN_JSON;
     }
 
-    @ApiOperation("登录检查接口")
-    @GetMapping(value = "/checkLogin")
-    public String checkLogin(@RequestParam Integer role, HttpSession session){
-        if(UtilTools.checkLogin(session, role)){
-            return ResJson.SUCCESS_RETURN_JSON;
-        }else {
-            return ResJson.NO_LOGIN_RETURN_JSON;
-        }
-    }
 
     @ApiOperation(value = "更新用户信息接口")
     @PostMapping(value = "/update")
@@ -243,4 +230,16 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "获取当前登录用户信息接口")
+    @GetMapping(value = "/getUserInfo")
+    public String getUserInfo(HttpSession session){
+        if(!UtilTools.checkLogin(session, 7)){
+            return ResJson.NO_LOGIN_RETURN_JSON;
+        }
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", session.getAttribute("userId"));
+        wrapper.select(COLUMNS);
+        User user = this.userService.getOne(wrapper);
+        return JsonUtil.objectToJson(FIELDS, user);
+    }
 }

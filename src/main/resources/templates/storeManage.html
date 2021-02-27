@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>用户信息管理</title>
+    <title>门店信息管理</title>
     <meta content="webkit" name="renderer">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
@@ -33,49 +33,23 @@
 <script charset="utf-8" src="../static/layui/layui.js"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
-<div id="addByXml">
-
-</div>
 
 <form action="" class="layui-form" enctype="multipart/form-data" id="addForm" lay-filter="add"
       style="display: none">
     <div class="layui-form-item">
-        <label class="layui-form-label">用户名</label>
+        <label class="layui-form-label">门店名</label>
         <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" lay-reqtext="用户名是必填项，岂能为空？" lay-verify="required"
-                   name="username"
-                   placeholder="用户名" type="text">
+            <input autocomplete="off" class="layui-input" lay-reqtext="门店是必填项，岂能为空？" lay-verify="required"
+                   name="name"
+                   placeholder="门店名" type="text">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">密码</label>
+        <label class="layui-form-label">门店描述</label>
         <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" lay-reqtext="密码是必填项，岂能为空？" lay-verify="required"
-                   name="password"
-                   placeholder="密码" type="password">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">真实姓名</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" lay-reqtext="真实姓名是必填项，岂能为空？" lay-verify="required"
-                   name="realName"
-                   placeholder="真实姓名" type="text">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">邮箱</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" lay-reqtext="邮箱是必填项，岂能为空？" lay-verify="required"
-                   name="email"
-                   placeholder="邮箱" type="text">
-        </div>
-    </div>
-    <div class="layui-inline">
-        <label class="layui-form-label">所属门店</label>
-        <div class="layui-input-inline">
-            <select id="storeSelectAdd" lay-search="" lay-verify="required" name="storeId">
-            </select>
+            <input autocomplete="off" class="layui-input" lay-reqtext="门店描述是必填项，岂能为空？" lay-verify="required"
+                   name="description"
+                   placeholder="门店描述" type="text">
         </div>
     </div>
     <div class="layui-input-block">
@@ -97,66 +71,19 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">用户名</label>
+        <label class="layui-form-label">门店名</label>
         <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" id="username" lay-verify="required" name="username"
-                   placeholder="用户名"
-                   style="width:340px" type="text" readonly="true">
+            <input autocomplete="off" class="layui-input" lay-reqtext="门店名是必填项，岂能为空？" lay-verify="required"
+                   name="name"
+                   placeholder="门店名" type="text">
         </div>
     </div>
-
     <div class="layui-form-item">
-        <label class="layui-form-label">密码</label>
+        <label class="layui-form-label">门店描述</label>
         <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" id="password" name="password"
-                   placeholder="密码"
-                   style="width:340px" type="password">
-        </div>
-    </div>
-
-    <div class="layui-inline" id = userRoleSelectDiv>
-        <label class="layui-form-label">用户角色</label>
-        <div class="layui-input-inline">
-            <select id="userRoleSelect" lay-search="" lay-verify="required" name="roleId">
-                <option value="">请选择用户角色</option>
-                <option value="1">系统管理员</option>
-                <option value="2">门店管理员</option>
-                <option value="4">销售员</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="layui-inline" id="storeSelectDiv">
-        <label class="layui-form-label">所属门店</label>
-        <div class="layui-input-inline">
-            <select id="storeSelectUpdate" lay-search="" lay-verify="required" name="storeId">
-            </select>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">真实姓名</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" id="realName" name="realName" lay-verify="required"
-                   placeholder="真实姓名"
-                   style="width:340px" type="text">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">邮箱</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" id="email" name="email" lay-verify="required"
-                   placeholder="邮箱"
-                   style="width:340px" type="text">
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">是否启用</label>
-        <div class="layui-input-block">
-            <input type="radio" name="enableStatus" value="0" title="已禁用">
-            <input type="radio" name="enableStatus" value="1" title="已启用">
+            <input autocomplete="off" class="layui-input" lay-reqtext="门店描述是必填项，岂能为空？" lay-verify="required"
+                   name="description"
+                   placeholder="门店描述" type="text">
         </div>
     </div>
 
@@ -178,7 +105,7 @@
 
         table.render({
             elem: '#test'
-            , url: '/user/getUserList'
+            , url: '/store/getStoreList'
             , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
@@ -190,16 +117,10 @@
                 [
                     {type: 'checkbox', fixed: 'left'}
                     , {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
-                    , {field: 'username', title: '用户名'}
-                    , {field: 'realName', title: '姓名'}
-                    , {field: 'roleId', title: '角色id', hide: true}
-                    , {field: 'role', title: '用户角色'}
-                    , {field: 'storeId', title: '门店id', hide: true}
-                    , {field: 'store', title: '所在门店'}
-                    , {field: 'email', title: '邮箱'}
-                    , {field: 'enableStatus', title: '用户状态', sort: true, templet: function(d){if(d.enableStatus == 0){return '未启用'}else{return '已启用'}}}
-                    , {field: 'createTime', title: '注册时间', sort: true}
-                    , {field: 'updateTime', title: '修改时间', hide: true}
+                    , {field: 'name', title: '门店名'}
+                    , {field: 'description', title: '门店描述'}
+                    , {field: 'createTime', title: '创建时间'}
+                    , {field: 'updateTime', title: '修改时间', hide:true}
                     , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
                 ]
             ]
@@ -220,7 +141,7 @@
                     for(var i = 0; i < data.length; i++){
                         ids.push(data[i].id);
                     }
-                    layer.confirm('确定要删除这' + ids.length + '个用户吗？', {
+                    layer.confirm('确定要删除这' + ids.length + '个门店吗？', {
                         btn: ['确定','取消'] //按钮
                     }, function(){
                         multiDelete(ids);
@@ -228,15 +149,7 @@
                         layer.close(layer.index);
                     });
                     break;
-                case 'getCheckLength':
-                    var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
-                    break;
-                case 'isAll':
-                    layer.msg(checkStatus.isAll ? '全选' : '未全选');
-                    break;
                 case 'add': {
-                    getStoreList("storeSelectAdd");
                     //捕获表单，打开弹层
                     formLayerId = layer.open({
                         type: 1,
@@ -262,10 +175,10 @@
             var data = obj.data;
             //console.log(obj)
             if (obj.event === 'del') {
-                layer.confirm('真的删除该用户么', function (index) {
+                layer.confirm('真的删除该门店么', function (index) {
                     $.ajax({
                         type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                        url: '/user/deleteById',    //传输地址的URL
+                        url: '/store/deleteStore',    //传输地址的URL
                         data: data, //data代表我们的数据  key -value类型的数据
                         dataType: 'JSON',
                         async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
@@ -277,7 +190,7 @@
                                 layer.msg(res.msg);
                                 //刷新页面
                                 table.reload('test', {
-                                    url: '/user/getUserList'
+                                    url: '/store/getStoreList'
                                 });
                             } else {
                                 layer.msg(res.msg);
@@ -291,16 +204,11 @@
                     layer.close(index);
                 });
             } else if (obj.event === 'edit') {
-                getStoreList("storeSelectUpdate");
                 form.render()
                 form.val('update', {
                     "id": data.id // "name": "value"
-                    , "username": data.username
-                    , "roleId":data.roleId
-                    , "storeId": data.storeId
-                    , "realName": data.realName
-                    , "email": data.email
-                    , "enableStatus": data.enableStatus
+                    , "name": data.name
+                    , "description":data.description
                 });
                 //捕获表单，打开弹层
                 formLayerId = layer.open({
@@ -321,7 +229,7 @@
             data.field.password = md5(data.field.password);
             $.ajax({
                 type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                url: "/user/update",    //传输地址的URL
+                url: "/store/addOrUpdateStore",    //传输地址的URL
                 data: JSON.stringify(data.field), //data代表我们的数据  key -value类型的数据
                 contentType: "application/json",
                 dataType: 'JSON',
@@ -334,7 +242,7 @@
                         layer.msg(res.msg);
                         //刷新页面
                         table.reload('test', {
-                            url: '/user/getUserList'
+                            url: '/store/getStoreList'
                         });
                         form.render();
                     } else {
@@ -349,12 +257,12 @@
                 }
             });
         });
-        //单个添加表单提交事件
+        //添加表单提交事件
         form.on('submit(addSub)', function (data) {
             data.field.password = md5(data.field.password);
             $.ajax({
                 type: "post", //指定提交的类型
-                url: "/user/addUser",    //传输地址的URL
+                url: "/store/addOrUpdateStore",    //传输地址的URL
                 data: JSON.stringify(data.field), //data代表我们的数据  key -value类型的数据
                 dataType: 'JSON',
                 contentType: "application/json",
@@ -364,10 +272,10 @@
                     if (res.code == 200) {
                         layer.msg("添加成功！！");
                         table.reload('test', {
-                            url: '/user/getUserList'
+                            url: '/store/getStoreList'
                         });
                     } else if (res.code == 20001) {
-                        layer.msg("已存在相同用户名的用户");
+                        layer.msg("已存在相同名字的商店");
                     } else {
                         layer.msg("操作失败!");
                     }
@@ -396,35 +304,10 @@
         //     }
         // });
         // 获取门店列表
-        function getStoreList(id) {
-            $.ajax({
-                type: "get", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                url: "/store/getStoreIdAndNameList",    //传输地址的URL
-                data: {}, //data代表我们的数据  key -value类型的数据
-                dataType: 'JSON',
-                async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
-                success: function (res)//success、error代表是否返回成功
-                {
-                    if (res.code == 200) {
-                        var html = '<option value="">请选择一个门店</option>';
-                        for (var i = 0; i < res.data.length; i++) {
-                            html += '<option value="' + res.data[i].id + '">' + res.data[i].name + '</option>';
-                        }
-                        $("#" + id).html(html);
-                        form.render("select");
-                    } else {
-                        layer.msg("获取门店列表失败，请检查网络连接");
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    layer.msg("网络错误！");
-                }
-            });
-        }
         function multiDelete(ids){
             $.ajax({
                 type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                url: '/user/multiDelete',    //传输地址的URL
+                url: '/store/multiDeleteStore',    //传输地址的URL
                 data: {"ids": ids}, //data代表我们的数据  key -value类型的数据
                 dataType: 'JSON',
                 async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
@@ -434,10 +317,14 @@
                         layer.msg("账号已过期或无权访问本接口，请重新登陆");
                         form.render();
                     } else if (res.code == "200") {
-                        layer.msg(res.msg);
+                        var msg = "已成功删除" + res.data.deleteNum + "个门店";
+                        if(res.data.deleteNum < ids.length){
+                            msg += "请检查未删除门店是否存在关联数据"
+                        }
+                        layer.msg("已成功删除" + res.data.deleteNum + "个门店");
                         //刷新页面
                         table.reload('test', {
-                            url: '/user/getUserList'
+                            url: '/store/getStoreList'
                         });
                     } else {
                         layer.msg(res.msg);

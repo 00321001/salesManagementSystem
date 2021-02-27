@@ -21,7 +21,7 @@ public class JsonUtil {
      * @return 返回转换好的json
      * @throws Exception 传入的字段列表或list内的对象格式不对抛出异常
      */
-    public static String listToLayJson(String[] fields, List<?> data, Long count) throws Exception {
+    public static String listToLayJson(String[] fields, List<?> data, Long count) {
         StringBuilder re = new StringBuilder();
         if(count == null){
             count = (long) data.size();
@@ -34,7 +34,12 @@ public class JsonUtil {
             return re.toString();
         }
         for (Object object : data) {
-            re.append(beanToJson(fields, object));
+            try{
+                re.append(beanToJson(fields, object));
+            }catch (Exception e){
+                log.error(e);
+                return ResJson.FAIL_RETURN_JSON;
+            }
             re.append(',');
         }
         re.deleteCharAt(re.length() - 1);
@@ -77,10 +82,15 @@ public class JsonUtil {
      * @param fields String数组形式的字段列表
      * @param object 传入的javaBean对象
      * @return 返回转换好的json
-     * @throws Exception 传入的字段列表或对象格式不对抛出异常
      */
-    public static String objectToJson(String[] fields, Object object) throws Exception {
-        return "{\"code\":200,\"msg\":\"成功\",\"data\":" + beanToJson(fields, object) + '}';
+    public static String objectToJson(String[] fields, Object object){
+        try{
+            return "{\"code\":200,\"msg\":\"成功\",\"data\":" + beanToJson(fields, object) + '}';
+        }catch (Exception e){
+            log.error(e);
+            return ResJson.FAIL_RETURN_JSON;
+        }
+
     }
 
     /**

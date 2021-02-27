@@ -110,8 +110,8 @@
 
         function getStoreList() {
             $.ajax({
-                type: "get", //指定提交的类型 get对应 doGet()方法，post--->doPost()犯法
-                url: "/Store/getStoreIdAndNameList",    //传输地址的URL
+                type: "get", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
+                url: "/store/getStoreIdAndNameList",    //传输地址的URL
                 data: {}, //data代表我们的数据  key -value类型的数据
                 dataType: 'JSON',
                 async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
