@@ -5,7 +5,6 @@ import cn.salesManagementSystem.utils.UtilTools;
 import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,11 +18,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class IndexController {
     @GetMapping(value = "/")
-    public String index(HttpSession session){
-        if(!UtilTools.checkLogin(session, Constants.ROLE_ALL)){
+    public String index(HttpSession session) {
+        if (!UtilTools.checkLogin(session, Constants.ROLE_ALL)) {
             return "login";
         }
-        switch (session.getAttribute("roleId").toString()){
+        switch (session.getAttribute("roleId").toString()) {
             case Constants.ROLE_SUPER_ADMIN_STR:
                 return "systemAdmin";
             case Constants.ROLE_SHOP_ADMIN_STR:
@@ -34,6 +33,7 @@ public class IndexController {
                 return "login";
         }
     }
+
     @GetMapping(value = "/login")
     public String login() {
         return "login";
@@ -45,26 +45,28 @@ public class IndexController {
     }
 
     @GetMapping(value = "/userManage")
-    public String userManage(HttpSession session){
-        if(UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)){
+    public String userManage(HttpSession session) {
+        if (UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)) {
             return "userManage";
-        }else {
+        } else {
             return "login";
         }
     }
+
     @GetMapping(value = "/storeManage")
-    public String storeManage(HttpSession session){
-        if(UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)){
+    public String storeManage(HttpSession session) {
+        if (UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)) {
             return "storeManage";
-        }else {
+        } else {
             return "login";
         }
     }
+
     @GetMapping(value = "/goodsManage")
-    public String goodsManage(HttpSession session){
-        if(UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)){
+    public String goodsManage(HttpSession session) {
+        if (UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)) {
             return "goodsManage";
-        }else {
+        } else {
             return "login";
         }
     }

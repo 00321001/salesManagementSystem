@@ -17,9 +17,9 @@
 <script id="toolbarDemo" type="text/html">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-<!--        <button type="button" class="layui-btn  layui-btn-sm" id="uploadXml"><i class="layui-icon"></i>通过xml文件批量添加-->
-<!--            -->
-<!--        </button>-->
+        <!--        <button type="button" class="layui-btn  layui-btn-sm" id="uploadXml"><i class="layui-icon"></i>通过xml文件批量添加-->
+        <!--            -->
+        <!--        </button>-->
         <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteByIds">批量删除</button>
     </div>
 </script>
@@ -92,7 +92,7 @@
         <label class="layui-form-label">ID</label>
         <div class="layui-input-block">
             <input autocomplete="off" class="layui-input" id="id" lay-verify="required" name="id" placeholder="ID"
-                   type="text" readonly="true">
+                   readonly="true" type="text">
         </div>
     </div>
 
@@ -101,7 +101,7 @@
         <div class="layui-input-block">
             <input autocomplete="off" class="layui-input" id="username" lay-verify="required" name="username"
                    placeholder="用户名"
-                   style="width:340px" type="text" readonly="true">
+                   readonly="true" style="width:340px" type="text">
         </div>
     </div>
 
@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    <div class="layui-inline" id = userRoleSelectDiv>
+    <div class="layui-inline" id=userRoleSelectDiv>
         <label class="layui-form-label">用户角色</label>
         <div class="layui-input-inline">
             <select id="userRoleSelect" lay-search="" lay-verify="required" name="roleId">
@@ -137,7 +137,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">真实姓名</label>
         <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" id="realName" name="realName" lay-verify="required"
+            <input autocomplete="off" class="layui-input" id="realName" lay-verify="required" name="realName"
                    placeholder="真实姓名"
                    style="width:340px" type="text">
         </div>
@@ -146,7 +146,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">邮箱</label>
         <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" id="email" name="email" lay-verify="required"
+            <input autocomplete="off" class="layui-input" id="email" lay-verify="required" name="email"
                    placeholder="邮箱"
                    style="width:340px" type="text">
         </div>
@@ -155,8 +155,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">是否启用</label>
         <div class="layui-input-block">
-            <input type="radio" name="enableStatus" value="0" title="已禁用">
-            <input type="radio" name="enableStatus" value="1" title="已启用">
+            <input name="enableStatus" title="已禁用" type="radio" value="0">
+            <input name="enableStatus" title="已启用" type="radio" value="1">
         </div>
     </div>
 
@@ -197,16 +197,24 @@
                     , {field: 'storeId', title: '门店id', hide: true}
                     , {field: 'store', title: '所在门店'}
                     , {field: 'email', title: '邮箱'}
-                    , {field: 'enableStatus', title: '用户状态', sort: true, templet: function(d){if(d.enableStatus == 0){return '未启用'}else{return '已启用'}}}
+                    , {
+                    field: 'enableStatus', title: '用户状态', sort: true, templet: function (d) {
+                        if (d.enableStatus == 0) {
+                            return '未启用'
+                        } else {
+                            return '已启用'
+                        }
+                    }
+                }
                     , {field: 'createTime', title: '注册时间', sort: true}
                     , {field: 'updateTime', title: '修改时间', hide: true}
                     , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
                 ]
             ]
             , page: true
-            ,request: {
+            , request: {
                 pageName: 'current' //页码的参数名称，默认：page
-                ,limitName: 'size' //每页数据量的参数名，默认：limit
+                , limitName: 'size' //每页数据量的参数名，默认：limit
             }
         });
 
@@ -217,14 +225,14 @@
                 case 'deleteByIds':
                     var data = checkStatus.data;
                     var ids = [];
-                    for(var i = 0; i < data.length; i++){
+                    for (var i = 0; i < data.length; i++) {
                         ids.push(data[i].id);
                     }
                     layer.confirm('确定要删除这' + ids.length + '个用户吗？', {
-                        btn: ['确定','取消'] //按钮
-                    }, function(){
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
                         multiDelete(ids);
-                    }, function(){
+                    }, function () {
                         layer.close(layer.index);
                     });
                     break;
@@ -296,7 +304,7 @@
                 form.val('update', {
                     "id": data.id // "name": "value"
                     , "username": data.username
-                    , "roleId":data.roleId
+                    , "roleId": data.roleId
                     , "storeId": data.storeId
                     , "realName": data.realName
                     , "email": data.email
@@ -421,7 +429,8 @@
                 }
             });
         }
-        function multiDelete(ids){
+
+        function multiDelete(ids) {
             $.ajax({
                 type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
                 url: '/user/multiDelete',    //传输地址的URL

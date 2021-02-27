@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IStoreService extends IService<Store> {
     /**
      * 删除门店的Service层接口
+     *
      * @param id 门店id
      * @return 是否成功
      */

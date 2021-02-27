@@ -29,14 +29,14 @@ import java.util.List;
 @Log4j
 @Api(tags = "商品管理相关接口")
 public class GoodsController {
+    private static final String[] FIELDS = new String[]{"id", "name", "description", "classificationId", "price", "createTime", "updateTime", "classification"};
     @Resource
     private IGoodsService goodsService;
-    private static final String[] FIELDS = new String[]{"id", "name", "description", "classificationId","price","createTime", "updateTime", "classification"};
 
     @ApiOperation(value = "获取商品列表接口")
     @GetMapping("getGoodsList")
-    public String getGoodsList(HttpSession session, @RequestParam Integer current, @RequestParam Integer size){
-        if(!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)){
+    public String getGoodsList(HttpSession session, @RequestParam Integer current, @RequestParam Integer size) {
+        if (!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         IPage<Goods> goodsIPage = this.goodsService.getGoodsList(new Page<>(current, size));
@@ -46,48 +46,48 @@ public class GoodsController {
 
     @ApiOperation(value = "添加或修改商品接口")
     @PostMapping("addOrUpdateGoods")
-    public String addGoods(@RequestBody Goods goods, HttpSession session){
-        if(!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)){
+    public String addGoods(@RequestBody Goods goods, HttpSession session) {
+        if (!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         boolean flag = this.goodsService.saveOrUpdate(goods);
-        if(flag){
+        if (flag) {
             return ResJson.SUCCESS_RETURN_JSON;
-        }else {
+        } else {
             return ResJson.FAIL_RETURN_JSON;
         }
     }
 
     @ApiOperation(value = "删除商品接口")
     @PostMapping("deleteGoods")
-    public String deleteGoods(HttpSession session, @RequestParam Long id){
-        if(!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)){
+    public String deleteGoods(HttpSession session, @RequestParam Long id) {
+        if (!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         boolean flag = this.goodsService.deleteGoods(id);
-        if(flag){
+        if (flag) {
             return ResJson.SUCCESS_RETURN_JSON;
-        }else {
+        } else {
             return ResJson.FAIL_RETURN_JSON;
         }
     }
 
     @ApiOperation(value = "批量删除商品接口")
     @PostMapping("/multiDeleteGoods")
-    public String multiDeleteStore(HttpSession session, @RequestParam Long[] ids){
-        if(!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)){
+    public String multiDeleteStore(HttpSession session, @RequestParam Long[] ids) {
+        if (!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         int deleteNum = 0;
-        for (Long id: ids) {
+        for (Long id : ids) {
             boolean flag = this.goodsService.deleteGoods(id);
-            if(flag){
-                deleteNum ++;
+            if (flag) {
+                deleteNum++;
             }
         }
-        if(deleteNum == 0){
+        if (deleteNum == 0) {
             return ResJson.FAIL_RETURN_JSON;
         }
-        return ResJson.SUCCESS_RETURN_JSON.substring(0,ResJson.SUCCESS_RETURN_JSON.length() - 1) + ",\"data\":{\"deleteNum\":\"" + deleteNum + "\"}}";
+        return ResJson.SUCCESS_RETURN_JSON.substring(0, ResJson.SUCCESS_RETURN_JSON.length() - 1) + ",\"data\":{\"deleteNum\":\"" + deleteNum + "\"}}";
     }
 }

@@ -1,6 +1,5 @@
 package cn.salesManagementSystem.utils;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.log4j.Log4j;
 
 import java.lang.reflect.Method;
@@ -23,7 +22,7 @@ public class JsonUtil {
      */
     public static String listToLayJson(String[] fields, List<?> data, Long count) {
         StringBuilder re = new StringBuilder();
-        if(count == null){
+        if (count == null) {
             count = (long) data.size();
         }
         re.append("{\"code\":0,\"msg\":\"获取成功\",\"count\":");
@@ -34,9 +33,9 @@ public class JsonUtil {
             return re.toString();
         }
         for (Object object : data) {
-            try{
+            try {
                 re.append(beanToJson(fields, object));
-            }catch (Exception e){
+            } catch (Exception e) {
                 log.error(e);
                 return ResJson.FAIL_RETURN_JSON;
             }
@@ -83,10 +82,10 @@ public class JsonUtil {
      * @param object 传入的javaBean对象
      * @return 返回转换好的json
      */
-    public static String objectToJson(String[] fields, Object object){
-        try{
+    public static String objectToJson(String[] fields, Object object) {
+        try {
             return "{\"code\":200,\"msg\":\"成功\",\"data\":" + beanToJson(fields, object) + '}';
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e);
             return ResJson.FAIL_RETURN_JSON;
         }

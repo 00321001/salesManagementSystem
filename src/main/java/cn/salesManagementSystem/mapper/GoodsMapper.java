@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 public interface GoodsMapper extends BaseMapper<Goods> {
     /**
      * 分页查询商品列表的Mapper层接口
+     *
      * @param page 分页参数
      * @return 分好页的查询结果
      */
@@ -20,6 +21,7 @@ public interface GoodsMapper extends BaseMapper<Goods> {
 
     /**
      * 删除商品的Mapper层方法
+     *
      * @param id 商品id
      * @return 受影响行数
      */

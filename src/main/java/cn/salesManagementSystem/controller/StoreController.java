@@ -29,10 +29,9 @@ import java.util.List;
 @RestController
 public class StoreController {
 
+    private static final String[] FIELDS = new String[]{"id", "name", "description", "createTime", "updateTime"};
     @Resource
     private IStoreService service;
-
-    private static final String[] FIELDS = new String[]{"id", "name", "description", "createTime", "updateTime"};
 
     @ApiOperation("获取门店下拉框列表接口")
     @GetMapping("/getStoreIdAndNameList")
@@ -45,8 +44,8 @@ public class StoreController {
 
     @ApiOperation("获取门店列表接口")
     @GetMapping("/getStoreList")
-    public String getStoreList(@RequestParam Integer current, @RequestParam Integer size, HttpSession session){
-        if(!UtilTools.checkLogin(session, 1)){
+    public String getStoreList(@RequestParam Integer current, @RequestParam Integer size, HttpSession session) {
+        if (!UtilTools.checkLogin(session, 1)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         IPage<Store> storeIPage = this.service.page(new Page<Store>(current, size));
@@ -56,48 +55,48 @@ public class StoreController {
 
     @ApiOperation("添加或修改门店接口")
     @PostMapping("/addOrUpdateStore")
-    public String addOrUpdateStore(@RequestBody Store store, HttpSession session){
-        if(!UtilTools.checkLogin(session, 1)){
+    public String addOrUpdateStore(@RequestBody Store store, HttpSession session) {
+        if (!UtilTools.checkLogin(session, 1)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         boolean flag = this.service.saveOrUpdate(store);
-        if(flag){
+        if (flag) {
             return ResJson.SUCCESS_RETURN_JSON;
-        }else {
+        } else {
             return ResJson.FAIL_RETURN_JSON;
         }
     }
 
     @ApiOperation("删除门店接口")
     @PostMapping("/deleteStore")
-    public String deleteStore(@RequestParam Long id, HttpSession session){
-        if(!UtilTools.checkLogin(session, 1)){
+    public String deleteStore(@RequestParam Long id, HttpSession session) {
+        if (!UtilTools.checkLogin(session, 1)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         boolean flag = this.service.deleteStore(id);
-        if(flag){
+        if (flag) {
             return ResJson.SUCCESS_RETURN_JSON;
-        }else {
+        } else {
             return ResJson.FAIL_RETURN_JSON;
         }
     }
 
     @ApiOperation("批量删除门店接口")
     @PostMapping("/multiDeleteStore")
-    private String multiDeleteStore(@RequestParam Long[] ids, HttpSession session){
-        if(!UtilTools.checkLogin(session, 1)){
+    private String multiDeleteStore(@RequestParam Long[] ids, HttpSession session) {
+        if (!UtilTools.checkLogin(session, 1)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         int deleteNum = 0;
-        for (Long id: ids) {
+        for (Long id : ids) {
             boolean flag = this.service.deleteStore(id);
-            if(flag){
-                deleteNum ++;
+            if (flag) {
+                deleteNum++;
             }
         }
-        if(deleteNum == 0){
+        if (deleteNum == 0) {
             return ResJson.FAIL_RETURN_JSON;
         }
-        return ResJson.SUCCESS_RETURN_JSON.substring(0,ResJson.SUCCESS_RETURN_JSON.length() - 1) + ",\"data\":{\"deleteNum\":\"" + deleteNum + "\"}}";
+        return ResJson.SUCCESS_RETURN_JSON.substring(0, ResJson.SUCCESS_RETURN_JSON.length() - 1) + ",\"data\":{\"deleteNum\":\"" + deleteNum + "\"}}";
     }
 }

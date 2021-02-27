@@ -27,9 +27,9 @@ import java.util.List;
 @Api(tags = "商品管理相关接口")
 public class GoodsClassificationController {
 
+    private static final String[] FIELDS = new String[]{"id", "description", "createTime", "updateTime"};
     @Resource
     private IGoodsClassificationService service;
-    private static final String[] FIELDS = new String[]{"id",  "description", "createTime", "updateTime"};
 
     @ApiOperation("获取商品分类下拉框列表接口")
     @GetMapping("/getGoodsClassificationIdAndDescriptionList")

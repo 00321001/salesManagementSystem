@@ -59,9 +59,11 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item"><a class="site-demo-active" data-id="1" data-title="用户信息管理" data-type="tabAdd"
+                <li class="layui-nav-item"><a class="site-demo-active" data-id="1" data-title="用户信息管理"
+                                              data-type="tabAdd"
                                               data-url="userManage" href="javascript:">用户信息管理</a></li>
-                <li class="layui-nav-item"><a class="site-demo-active" data-id="2" data-title="门店信息管理" data-type="tabAdd"
+                <li class="layui-nav-item"><a class="site-demo-active" data-id="2" data-title="门店信息管理"
+                                              data-type="tabAdd"
                                               data-url="storeManage" href="javascript:">门店信息管理</a></li>
                 <li class="layui-nav-item">
                     <a class="" href="javascript:">商品信息管理</a>
@@ -112,6 +114,7 @@
 <script>
     getUserInfo();
     var layerIndex;
+
     function resetPassword() {
         layerIndex = layui.layer.open({
             type: 1,
@@ -123,7 +126,8 @@
             }
         });
     }
-    function getUserInfo(){
+
+    function getUserInfo() {
         $.ajax({
             type: "get", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
             url: "/user/getUserInfo",    //传输地址的URL
@@ -131,9 +135,9 @@
             dataType: 'JSON',
             async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
             success: function (res) {
-                if(res.code != 200){
+                if (res.code != 200) {
                     window.location.href("/login");
-                }else {
+                } else {
                     var html = $("#showUserName").html();
                     html += res.data.realName;
                     $("#showUserName").html(html);

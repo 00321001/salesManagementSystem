@@ -13,9 +13,14 @@
     </resultMap>
 
     <select id="getGoodsList" resultMap="BaseResultMap">
-        SELECT tg.*, tgc.description AS classification FROM t_goods tg LEFT JOIN t_goods_classification tgc on tgc.id = tg.classification_id
+        SELECT tg.*, tgc.description AS classification
+        FROM t_goods tg
+                 LEFT JOIN t_goods_classification tgc on tgc.id = tg.classification_id
     </select>
     <delete id="deleteGoods" parameterType="java.lang.Long">
-        DELETE FROM t_goods WHERE id = #{id} AND (SELECT COUNT(*) FROM ref_store_goods WHERE goods_id = #{id}) = 0;
+        DELETE
+        FROM t_goods
+        WHERE id = #{id}
+          AND (SELECT COUNT(*) FROM ref_store_goods WHERE goods_id = #{id}) = 0;
     </delete>
 </mapper>

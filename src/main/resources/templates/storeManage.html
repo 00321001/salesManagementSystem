@@ -17,9 +17,9 @@
 <script id="toolbarDemo" type="text/html">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-<!--        <button type="button" class="layui-btn  layui-btn-sm" id="uploadXml"><i class="layui-icon"></i>通过xml文件批量添加-->
-<!--            -->
-<!--        </button>-->
+        <!--        <button type="button" class="layui-btn  layui-btn-sm" id="uploadXml"><i class="layui-icon"></i>通过xml文件批量添加-->
+        <!--            -->
+        <!--        </button>-->
         <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteByIds">批量删除</button>
     </div>
 </script>
@@ -66,7 +66,7 @@
         <label class="layui-form-label">ID</label>
         <div class="layui-input-block">
             <input autocomplete="off" class="layui-input" id="id" lay-verify="required" name="id" placeholder="ID"
-                   type="text" readonly="true">
+                   readonly="true" type="text">
         </div>
     </div>
 
@@ -120,14 +120,14 @@
                     , {field: 'name', title: '门店名'}
                     , {field: 'description', title: '门店描述'}
                     , {field: 'createTime', title: '创建时间'}
-                    , {field: 'updateTime', title: '修改时间', hide:true}
+                    , {field: 'updateTime', title: '修改时间', hide: true}
                     , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
                 ]
             ]
             , page: true
-            ,request: {
+            , request: {
                 pageName: 'current' //页码的参数名称，默认：page
-                ,limitName: 'size' //每页数据量的参数名，默认：limit
+                , limitName: 'size' //每页数据量的参数名，默认：limit
             }
         });
 
@@ -138,14 +138,14 @@
                 case 'deleteByIds':
                     var data = checkStatus.data;
                     var ids = [];
-                    for(var i = 0; i < data.length; i++){
+                    for (var i = 0; i < data.length; i++) {
                         ids.push(data[i].id);
                     }
                     layer.confirm('确定要删除这' + ids.length + '个门店吗？', {
-                        btn: ['确定','取消'] //按钮
-                    }, function(){
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
                         multiDelete(ids);
-                    }, function(){
+                    }, function () {
                         layer.close(layer.index);
                     });
                     break;
@@ -208,7 +208,7 @@
                 form.val('update', {
                     "id": data.id // "name": "value"
                     , "name": data.name
-                    , "description":data.description
+                    , "description": data.description
                 });
                 //捕获表单，打开弹层
                 formLayerId = layer.open({
@@ -304,7 +304,7 @@
         //     }
         // });
         // 获取门店列表
-        function multiDelete(ids){
+        function multiDelete(ids) {
             $.ajax({
                 type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
                 url: '/store/multiDeleteStore',    //传输地址的URL
@@ -318,7 +318,7 @@
                         form.render();
                     } else if (res.code == "200") {
                         var msg = "已成功删除" + res.data.deleteNum + "个门店";
-                        if(res.data.deleteNum < ids.length){
+                        if (res.data.deleteNum < ids.length) {
                             msg += "请检查未删除门店是否存在关联数据"
                         }
                         layer.msg("已成功删除" + res.data.deleteNum + "个门店");

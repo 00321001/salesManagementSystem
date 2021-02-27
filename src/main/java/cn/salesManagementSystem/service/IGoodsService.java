@@ -12,8 +12,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  **/
 public interface IGoodsService extends IService<Goods> {
     IPage<Goods> getGoodsList(IPage<Goods> page);
+
     /**
      * 删除商品的Service层接口
+     *
      * @param id 商品id
      * @return 是否成功
      */

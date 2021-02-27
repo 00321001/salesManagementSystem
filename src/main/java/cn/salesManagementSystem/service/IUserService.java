@@ -4,8 +4,6 @@ import cn.salesManagementSystem.entity.User;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.List;
-
 /**
  * @author 闫铁鹰
  * @program salesManagementSystem
