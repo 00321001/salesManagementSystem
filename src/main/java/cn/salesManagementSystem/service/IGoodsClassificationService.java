@@ -10,4 +10,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @date 2021-02-28 03:14
  **/
 public interface IGoodsClassificationService extends IService<GoodsClassification> {
+
 }

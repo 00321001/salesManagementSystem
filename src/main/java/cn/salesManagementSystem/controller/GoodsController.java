@@ -59,7 +59,7 @@ public class GoodsController {
     }
 
     @ApiOperation(value = "删除商品接口")
-    @PostMapping("deleteGoods")
+    @PostMapping("/deleteGoods")
     public String deleteGoods(HttpSession session, @RequestParam Long id) {
         if (!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)) {
             return ResJson.NO_LOGIN_RETURN_JSON;

@@ -18,4 +18,5 @@ import javax.annotation.Resource;
 public class GoodsClassificationServiceImpl extends ServiceImpl<GoodsClassificationMapper, GoodsClassification> implements IGoodsClassificationService {
     @Resource
     private GoodsClassificationMapper goodsClassificationMapper;
+
 }

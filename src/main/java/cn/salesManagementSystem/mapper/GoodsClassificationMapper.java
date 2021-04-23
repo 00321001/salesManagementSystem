@@ -10,4 +10,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @date 2021-02-28 03:14
  **/
 public interface GoodsClassificationMapper extends BaseMapper<GoodsClassification> {
+
 }
