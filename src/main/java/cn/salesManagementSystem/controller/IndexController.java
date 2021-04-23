@@ -70,4 +70,13 @@ public class IndexController {
             return "login";
         }
     }
+
+    @GetMapping("/goodsClassificationManage")
+    public String goodsClassificationManage(HttpSession session) {
+        if (UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)) {
+            return "goodsClassificationManage";
+        } else {
+            return "login";
+        }
+    }
 }
