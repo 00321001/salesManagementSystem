@@ -16,4 +16,5 @@ public class Constants {
     public static final String ROLE_SALESMAN_STR = "4";
     public static final Integer ROLE_ALL = 7;
     public static final String ROLE_ALL_STR = "7";
+    public static final Integer SQL_SUCCESS = 1;
 }

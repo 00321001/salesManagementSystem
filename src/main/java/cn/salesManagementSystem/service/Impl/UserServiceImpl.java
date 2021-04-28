@@ -3,6 +3,7 @@ package cn.salesManagementSystem.service.Impl;
 import cn.salesManagementSystem.entity.User;
 import cn.salesManagementSystem.mapper.UserMapper;
 import cn.salesManagementSystem.service.IUserService;
+import cn.salesManagementSystem.utils.Constants;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,8 @@ import javax.annotation.Resource;
  * @description 用户管理相关接口Service层实现类
  * @date 2021-02-24 00:28
  **/
-
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
-
     @Resource
     private UserMapper userMapper;
 
@@ -43,6 +42,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public boolean addUser(User user) {
-        return this.userMapper.addUser(user) == 1;
+        return this.userMapper.addUser(user).equals(Constants.SQL_SUCCESS);
     }
 }

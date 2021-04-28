@@ -7,13 +7,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 /**
- * 工具类
- *
- * @author yty
- */
+ * @author 闫铁鹰
+ * @program salesManagementSystem
+ * @description 工具类
+ * @date 2021-02-23 15:03
+ **/
 @Log4j
 public class UtilTools {
-
     /**
      * 用于密码加盐的盐值
      */
@@ -69,6 +69,13 @@ public class UtilTools {
         }
     }
 
+    /**
+     * 用于密码加密的方法
+     *
+     * @param password 前端MD5后的密码
+     * @param userName 用户名
+     * @return 二次加密后的密码
+     */
     public static String passwordEncryption(String password, String userName) {
         password = password + userName + SALT;
         byte[] passwordBytes = password.getBytes(StandardCharsets.UTF_8);
@@ -90,5 +97,4 @@ public class UtilTools {
         }
         return password;
     }
-
 }

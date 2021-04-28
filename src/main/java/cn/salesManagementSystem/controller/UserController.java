@@ -26,13 +26,11 @@ import java.util.List;
  * @description 用户管理相关接口Controller层实现
  * @date 2021-02-24 01:00
  **/
-
 @RestController
 @RequestMapping(value = "/user")
 @Log4j
 @Api(tags = "用户管理相关接口")
 public class UserController {
-
     private static final String[] FIELDS = {"id", "username", "roleId", "storeId", "realName", "email", "enableStatus", "createTime", "updateTime", "role", "store"};
     private static final String[] COLUMNS = {"id", "username", "role_id", "store_id", "real_name", "email", "enable_status", "create_time", "update_time"};
     @Resource
@@ -54,7 +52,6 @@ public class UserController {
         List<User> userList = page1.getRecords();
         return JsonUtil.listToLayJson(FIELDS, userList, page1.getTotal());
     }
-
 
     @ApiOperation("添加用户（注册）接口")
     @PostMapping(value = "/addUser")
@@ -104,7 +101,6 @@ public class UserController {
         session.invalidate();
         return ResJson.SUCCESS_RETURN_JSON;
     }
-
 
     @ApiOperation(value = "更新用户信息接口")
     @PostMapping(value = "/update")

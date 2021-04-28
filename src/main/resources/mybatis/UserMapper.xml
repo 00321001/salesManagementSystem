@@ -15,13 +15,11 @@
         <result column="role" jdbcType="VARCHAR" property="role"/>
         <result column="store" jdbcType="VARCHAR" property="store"/>
     </resultMap>
-
     <!--在用户表中插入数据的SQL语句-->
     <insert id="addUser" parameterType="cn.salesManagementSystem.entity.User">
         INSERT INTO t_user(username, password, role_id, store_id, real_Name, email, enable_status)
         VALUES (#{username}, #{password}, 2, #{storeId}, #{realName}, #{email}, 0)
     </insert>
-
     <!--查询用户列表的语句，非系统管理员只能查询本门店数据-->
     <select id="getUserList" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT tu.id, tu.username, tu.role_id, tu.store_id, tu.real_Name, tu.email, tu.enable_status, tu.create_time,
@@ -29,6 +27,4 @@
         FROM t_user tu LEFT JOIN t_role tr ON tu.role_id = tr.id LEFT JOIN t_store ts ON tu.store_id = ts.id WHERE 1=1
         <if test="roleId != 1">AND tu.store_id = #{storeId}</if>
     </select>
-
-
 </mapper>

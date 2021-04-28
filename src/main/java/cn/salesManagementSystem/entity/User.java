@@ -12,7 +12,6 @@ import lombok.Data;
  * @description 用户实体类
  * @date 2021-02-24 00:03
  **/
-
 @Data
 @TableName(value = "t_user")
 @ApiModel(value = "用户实体类")
@@ -32,5 +31,4 @@ public class User {
     private String role;
     @TableField(exist = false)
     private String store;
-
 }

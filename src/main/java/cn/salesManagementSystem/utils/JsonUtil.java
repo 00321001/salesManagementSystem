@@ -46,7 +46,6 @@ public class JsonUtil {
         return re.toString();
     }
 
-
     /**
      * 将list转换为json
      *
@@ -136,5 +135,4 @@ public class JsonUtil {
         jsonStr.append('}');
         return jsonStr.toString();
     }
-
 }

@@ -1,6 +1,7 @@
+<!--login.html-->
+<!--用户登录页面-->
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
     <meta charset="utf-8">
     <title>登录页面</title>
@@ -53,13 +54,12 @@
             $ = layui.jquery;
         form.on('submit(login)', function (data) {
             $.ajax({
-                type: "post", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                url: "/user/login",    //传输地址的URL
-                data: {"username": data.field.username, "password": md5(data.field.password)}, //data代表我们的数据  key -value类型的数据
+                type: "post",
+                url: "/user/login",
+                data: {"username": data.field.username, "password": md5(data.field.password)},
                 dataType: 'JSON',
-                async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
-                success: function (res)//success、error代表是否返回成功
-                {
+                async: false,
+                success: function (res) {
                     if (res.code == 200) {
                         layer.msg("登录成功！");
                         window.location.reload();
@@ -77,5 +77,4 @@
         });
     });
 </script>
-
 </html>
