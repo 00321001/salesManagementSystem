@@ -61,6 +61,21 @@ public class RecordController {
         return JsonUtil.listToLayJson(FIELDS, page.getRecords(), page.getTotal());
     }
 
+    @GetMapping("/getServiceList")
+    @ApiOperation("获取待处理售后信息列表接口")
+    public String getServiceList(HttpSession session, @RequestParam Integer current, @RequestParam Integer size) {
+        if (!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)) {
+            return ResJson.NO_LOGIN_RETURN_JSON;
+        }
+        User loginUser = userService.getById(session.getAttribute("userId").toString());
+        Record record = new Record();
+        if (loginUser.getRoleId() != 1) {
+            record.setStoreId(loginUser.getStoreId());
+        }
+        IPage<Record> page = this.recordService.getRecordList(new Page<>(current, size), record);
+        return JsonUtil.listToLayJson(FIELDS, page.getRecords(), page.getTotal());
+    }
+
     @PostMapping("/addOrUpdateRecord")
     @ApiOperation("添加或修改销售记录接口")
     public String addOrUpdateRecord(HttpSession session, @RequestBody Record record) {
@@ -108,6 +123,51 @@ public class RecordController {
             } else {
                 return ResJson.FAIL_RETURN_JSON;
             }
+        }
+    }
+
+    @PostMapping("/passService")
+    @ApiOperation("通过售后申请接口")
+    public String passService(HttpSession session, @RequestBody Record record) {
+        if (!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)) {
+            return ResJson.NO_LOGIN_RETURN_JSON;
+        }
+        if (record.getRecordStatus() == 1) {
+            QueryWrapper<Inventory> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("storeId", record.getStoreId());
+            queryWrapper.eq("goodsId", record.getGoodsId());
+            Inventory inventory = this.inventoryService.getOne(queryWrapper);
+            if (inventory.getInventory() < 1) {
+                return "{\"code\":500,\"msg\":\"请检查库存数量\"}";
+            }
+            UpdateWrapper<Inventory> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.set("inventory", inventory.getInventory() - 1);
+            updateWrapper.eq("id", inventory.getId());
+            boolean flag = this.inventoryService.update(updateWrapper);
+            if (flag) {
+                record.setRecordStatus(3);
+                flag = this.recordService.saveOrUpdate(record);
+                if (flag) {
+                    return ResJson.SUCCESS_RETURN_JSON;
+                } else {
+                    updateWrapper = new UpdateWrapper<>();
+                    updateWrapper.set("inventory", inventory.getInventory());
+                    updateWrapper.eq("id", inventory.getId());
+                    return ResJson.FAIL_RETURN_JSON;
+                }
+            } else {
+                return ResJson.FAIL_RETURN_JSON;
+            }
+        } else if (record.getRecordStatus() == 2) {
+            record.setRecordStatus(4);
+            boolean flag = this.recordService.saveOrUpdate(record);
+            if (flag) {
+                return ResJson.SUCCESS_RETURN_JSON;
+            } else {
+                return ResJson.FAIL_RETURN_JSON;
+            }
+        } else {
+            return ResJson.FAIL_RETURN_JSON;
         }
     }
 }

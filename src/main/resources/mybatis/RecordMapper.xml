@@ -27,4 +27,16 @@
         </if>
     </select>
 
+    <select id="getServiceList" parameterType="cn.salesManagementSystem.entity.Record" resultMap="BaseResultMap">
+        SELECT tr.*, ts.name AS store_name, tg.name AS goods_name, tu.real_name as real_name
+        FROM t_record tr
+        LEFT JOIN t_store ts ON tr.store_id = ts.id
+        LEFT JOIN t_goods tg ON tr.goods_id = tg.id
+        LEFT JOIN t_user tu ON tr.user_id = tu.id
+        WHERE tr.record_status = 1 AND tr.record_status = 2
+        <if test="record.storeId != null">
+            AND tr.store_id = #{record.storeId}
+        </if>
+    </select>
+
 </mapper>

@@ -20,4 +20,9 @@ public class RecordServiceImpl extends ServiceImpl<RecordMapper, Record> impleme
     public IPage<Record> getRecordList(IPage<Record> page, Record record) {
         return this.baseMapper.getRecordList(page, record);
     }
+
+    @Override
+    public IPage<Record> getServiceList(IPage<Record> page, Record record) {
+        return this.baseMapper.getServiceList(page, record);
+    }
 }

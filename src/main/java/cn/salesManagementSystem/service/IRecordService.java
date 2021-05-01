@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface IRecordService extends IService<Record> {
     IPage<Record> getRecordList(IPage<Record> page, Record record);
+
+    IPage<Record> getServiceList(IPage<Record> page, Record record);
 }

@@ -24,7 +24,7 @@
 </script>
 
 <script id="barDemo" type="text/html">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">售后申请</a>
+    <a class="layui-btn layui-btn-xs" lay-event="application">售后申请</a>
     <!--    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
 </script>
 
@@ -88,12 +88,10 @@
                                 return '已换货';
                             case 4:
                                 return '已退货';
-
                         }
                     }
                 }
                     , {field: 'createTime', title: '创建时间'}
-                    , {field: 'updateTime', title: '修改时间', hide: true}
                     , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
                 ]
             ]
@@ -106,22 +104,7 @@
 
         //头工具栏事件
         table.on('toolbar(test)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
-                case 'deleteByIds':
-                    var data = checkStatus.data;
-                    var ids = [];
-                    for (var i = 0; i < data.length; i++) {
-                        ids.push(data[i].id);
-                    }
-                    layer.confirm('确定要删除这' + ids.length + '个商品吗？', {
-                        btn: ['确定', '取消'] //按钮
-                    }, function () {
-                        multiDelete(ids);
-                    }, function () {
-                        layer.close(layer.index);
-                    });
-                    break;
                 case 'add': {
                     //捕获表单，打开弹层
                     getInventoryList("recordSelectAdd");
@@ -148,7 +131,6 @@
         //监听行工具事件
         table.on('tool(test)', function (obj) {
             var data = obj.data;
-            //console.log(obj)
             if (obj.event === 'application') {
                 layer.confirm('请选择售后类型',
                     {btn: ['换货', '退货']},
@@ -211,62 +193,9 @@
                         layer.close(index);
                     }
                 );
-            } else if (obj.event === 'edit') {
-                getInventoryList("recordClassSelectEdit");
-                form.render()
-                form.val('update', {
-                    "id": data.id // "name": "value"
-                    , "name": data.name
-                    , "classificationId": data.classificationId
-                    , "description": data.description
-                    , "price": data.price
-                });
-                //捕获表单，打开弹层
-                formLayerId = layer.open({
-                    type: 1,
-                    shade: false,
-                    title: false, //不显示标题
-                    content: $('#updataForm'), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-                    cancel: function () {
-                        form.render();
-                        layer.close(formLayerId);
-                    }
-                });
             }
         });
 
-        //修改表单提交事件
-        form.on('submit(updateSub)', function (data) {
-            $.ajax({
-                type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                url: "/record/addOrUpdateRecord",    //传输地址的URL
-                data: JSON.stringify(data.field), //data代表我们的数据  key -value类型的数据
-                contentType: "application/json",
-                dataType: 'JSON',
-                async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
-                success: function (res) {
-                    if (res.code == 401) {
-                        layer.msg("账号已过期，请重新登陆");
-                        form.render();
-                    } else if (res.code == 200) {
-                        layer.msg(res.msg);
-                        //刷新页面
-                        table.reload('test', {
-                            url: '/record/getRecordList'
-                        });
-                        form.render();
-                    } else {
-                        layer.msg(res.msg);
-                        form.render();
-                    }
-                    layer.close(formLayerId);
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(typeof (errorThrown));
-                    layer.close(formLayerId);
-                }
-            });
-        });
         //添加表单提交事件
         form.on('submit(addSub)', function (data) {
             $.ajax({
@@ -298,52 +227,6 @@
             });
             return false;
         });
-        // //文件上传
-        // upload.render({ //允许上传的文件后缀
-        //     elem: '#uploadXml'
-        //     , url: '/student/teacherAddStudentsUseXml' //改成您自己的上传接口
-        //     , accept: 'file' //普通文件
-        //     , exts: 'xml' //只允许上传xml文件
-        //     , done: function (res) {
-        //         layer.msg(res.msg);
-        //         console.log(res);
-        //         table.reload('test', {
-        //             url: '/user/getUserList'
-        //         });
-        //     }
-        // });
-        function multiDelete(ids) {
-            $.ajax({
-                type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                url: '/record/multiDeleteRecord',    //传输地址的URL
-                data: {"ids": ids}, //data代表我们的数据  key -value类型的数据
-                dataType: 'JSON',
-                async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
-                traditional: true,
-                success: function (res) {
-                    if (res.code == "401") {
-                        layer.msg("账号已过期或无权访问本接口，请重新登陆");
-                        form.render();
-                    } else if (res.code == "200") {
-                        var msg = "已成功删除" + res.data.deleteNum + "个商品";
-                        if (res.data.deleteNum < ids.length) {
-                            msg += "请检查未删除商品是否存在关联数据"
-                        }
-                        layer.msg("已成功删除" + res.data.deleteNum + "个商品");
-                        //刷新页面
-                        table.reload('test', {
-                            url: '/record/getRecordList'
-                        });
-                    } else {
-                        layer.msg(res.msg);
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(typeof (errorThrown));
-                    layer.close(formLayerId);
-                }
-            });
-        }
 
         function getInventoryList(id) {
             $.ajax({

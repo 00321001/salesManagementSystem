@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 
 public interface RecordMapper extends BaseMapper<Record> {
     IPage<Record> getRecordList(IPage<Record> page, Record record);
+
+    IPage<Record> getServiceList(IPage<Record> page, Record record);
 }

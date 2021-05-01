@@ -97,4 +97,13 @@ public class IndexController {
             return "login";
         }
     }
+
+    @GetMapping("/serviceManage")
+    public String serviceManage(HttpSession session) {
+        if (UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)) {
+            return "serviceManage";
+        } else {
+            return "login";
+        }
+    }
 }
