@@ -54,17 +54,16 @@
                     , {field: 'storeName', title: '所属门店'}
                     , {
                     field: 'recordStatus', title: '订单状态', templet: function (d) {
-                        switch (d.recordStatus) {
-                            case 0:
-                                return '正常';
-                            case 1:
-                                return '换货待审核';
-                            case 2:
-                                return '退货待审核';
-                            case 3:
-                                return '已换货';
-                            case 4:
-                                return '已退货';
+                        if (d.recordStatus == 0) {
+                            return '正常';
+                        } else if (d.recordStatus == 1) {
+                            return '换货待审核';
+                        } else if (d.recordStatus == 2) {
+                            return '退货待审核';
+                        } else if (d.recordStatus == 3) {
+                            return '已换货';
+                        } else if (d.recordStatus == 4) {
+                            return '已退货';
                         }
                     }
                 }
@@ -96,8 +95,9 @@
                 $.ajax({
                     type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
                     url: '/record/passService',    //传输地址的URL
-                    data: data, //data代表我们的数据  key -value类型的数据
+                    data: JSON.stringify(data), //data代表我们的数据  key -value类型的数据
                     dataType: 'JSON',
+                    contentType: 'application/json; charset=UTF-8',
                     async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
                     success: function (res) {
                         if (res.code == "401") {
@@ -122,9 +122,10 @@
                 data.recordStatus = 0;
                 $.ajax({
                     type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                    url: '/record/saveOrUpdate',    //传输地址的URL
-                    data: data, //data代表我们的数据  key -value类型的数据
+                    url: '/record/addOrUpdateRecord',    //传输地址的URL
+                    data: JSON.stringify(data), //data代表我们的数据  key -value类型的数据
                     dataType: 'JSON',
+                    contentType: 'application/json; charset=UTF-8',
                     async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
                     success: function (res) {
                         if (res.code == "401") {

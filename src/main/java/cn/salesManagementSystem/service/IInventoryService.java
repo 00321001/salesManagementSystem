@@ -4,6 +4,8 @@ import cn.salesManagementSystem.entity.Inventory;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author 闫铁鹰
  * @program salesManagementSystem
@@ -13,4 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface IInventoryService extends IService<Inventory> {
     IPage<Inventory> getInventoryList(Integer storeId, IPage<Inventory> page);
+
+    List<Inventory> getInventoryList(Integer storeId);
 }

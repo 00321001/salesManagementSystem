@@ -26,7 +26,7 @@ public class Record {
     @TableField(exist = false)
     private String storeName;
     @TableField(exist = false)
-    private String userName;
+    private String realName;
     @TableField(exist = false)
     private String goodsName;
 }

@@ -35,7 +35,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 public class RecordController {
 
-    public static final String[] FIELDS = {"id", "storeId", "goodsId", "userId", "recordStatus", "createTime", "userName", "storeName", "goodsName"};
+    public static final String[] FIELDS = {"id", "storeId", "goodsId", "userId", "recordStatus", "createTime", "realName", "storeName", "goodsName"};
     @Resource
     IRecordService recordService;
     @Resource
@@ -72,7 +72,7 @@ public class RecordController {
         if (loginUser.getRoleId() != 1) {
             record.setStoreId(loginUser.getStoreId());
         }
-        IPage<Record> page = this.recordService.getRecordList(new Page<>(current, size), record);
+        IPage<Record> page = this.recordService.getServiceList(new Page<>(current, size), record);
         return JsonUtil.listToLayJson(FIELDS, page.getRecords(), page.getTotal());
     }
 
@@ -100,6 +100,8 @@ public class RecordController {
                 return ResJson.FAIL_RETURN_JSON;
             }
             record.setRecordStatus(0);
+            record.setStoreId(storeId);
+            record.setUserId(loginUser.getId());
             boolean flag = this.recordService.saveOrUpdate(record);
             if (flag) {
                 UpdateWrapper<Inventory> updateWrapper = new UpdateWrapper<>();
@@ -134,8 +136,8 @@ public class RecordController {
         }
         if (record.getRecordStatus() == 1) {
             QueryWrapper<Inventory> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("storeId", record.getStoreId());
-            queryWrapper.eq("goodsId", record.getGoodsId());
+            queryWrapper.eq("store_id", record.getStoreId());
+            queryWrapper.eq("goods_id", record.getGoodsId());
             Inventory inventory = this.inventoryService.getOne(queryWrapper);
             if (inventory.getInventory() < 1) {
                 return "{\"code\":500,\"msg\":\"请检查库存数量\"}";

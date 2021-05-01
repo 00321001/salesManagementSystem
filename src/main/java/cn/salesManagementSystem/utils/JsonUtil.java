@@ -36,6 +36,7 @@ public class JsonUtil {
             try {
                 re.append(beanToJson(fields, object));
             } catch (Exception e) {
+                e.printStackTrace();
                 log.error(e);
                 return ResJson.FAIL_RETURN_JSON;
             }

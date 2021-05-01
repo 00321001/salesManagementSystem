@@ -89,6 +89,7 @@
 </form>
 
 <script>
+    getUserInfo();
     layui.use(['upload', 'table', 'layer', 'form'], function () {
         var table = layui.table,
             layer = layui.layer,
@@ -110,9 +111,11 @@
                 [
                     {type: 'checkbox', fixed: 'left'}
                     , {field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true}
-                    , {field: 'store_id', title: '商店id', hide: true}
-                    , {field: 'goods_id', title: '商品id', hide: true}
+                    , {field: 'goodsName', title: '商品名'}
+                    , {field: 'storeId', title: '商店id', hide: true}
+                    , {field: 'goodsId', title: '商品id', hide: true}
                     , {field: 'inventory', title: '库存数量'}
+                    , {field: 'storeName', title: '所属商店'}
                     , {field: 'createTime', title: '创建时间'}
                     , {field: 'updateTime', title: '修改时间', hide: true}
                     , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
@@ -171,7 +174,7 @@
             var data = obj.data;
             //console.log(obj)
             if (obj.event === 'del') {
-                layer.confirm('真的删除该商品么', function (index) {
+                layer.confirm('真的删除该库存记录么', function (index) {
                     $.ajax({
                         type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
                         url: '/inventory/deleteInventory',    //传输地址的URL
@@ -204,10 +207,8 @@
                 form.render()
                 form.val('update', {
                     "id": data.id // "name": "value"
-                    , "name": data.name
-                    , "classificationId": data.classificationId
-                    , "description": data.description
-                    , "price": data.price
+                    , "inventory": data.inventory
+                    , "goodsId": data.goodsId
                 });
                 //捕获表单，打开弹层
                 formLayerId = layer.open({
@@ -313,11 +314,11 @@
                         layer.msg("账号已过期或无权访问本接口，请重新登陆");
                         form.render();
                     } else if (res.code == "200") {
-                        var msg = "已成功删除" + res.data.deleteNum + "个商品";
+                        var msg = "已成功删除" + res.data.deleteNum + "条记录";
                         if (res.data.deleteNum < ids.length) {
-                            msg += "请检查未删除商品是否存在关联数据"
+                            msg += "请检查未删除数据是否存在关联数据"
                         }
-                        layer.msg("已成功删除" + res.data.deleteNum + "个商品");
+                        layer.msg(msg);
                         //刷新页面
                         table.reload('test', {
                             url: '/inventory/getInventoryList'
@@ -360,6 +361,30 @@
         }
 
     });
+
+    function getUserInfo() {
+        $.ajax({
+            type: "GET", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
+            url: '/user/getUserInfo',    //传输地址的URL
+            data: {}, //data代表我们的数据  key -value类型的数据
+            dataType: 'JSON',
+            async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
+            traditional: true,
+            success: function (res) {
+                if (res.code == "200") {
+                    if (res.data.roleId != 2) {
+                        $("#barDemo").html("");
+                        $("#toolbarDemo").html("");
+                    }
+                } else {
+                    layer.msg(res.msg);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(typeof (errorThrown));
+            }
+        });
+    }
 </script>
 
 </body>

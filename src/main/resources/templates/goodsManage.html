@@ -17,9 +17,6 @@
 <script id="toolbarDemo" type="text/html">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-        <!--        <button type="button" class="layui-btn  layui-btn-sm" id="uploadXml"><i class="layui-icon"></i>通过xml文件批量添加-->
-        <!--            -->
-        <!--        </button>-->
         <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteByIds">批量删除</button>
     </div>
 </script>
@@ -126,11 +123,11 @@
 </form>
 
 <script>
+    getUserInfo();
     layui.use(['upload', 'table', 'layer', 'form'], function () {
         var table = layui.table,
             layer = layui.layer,
             form = layui.form,
-            upload = layui.upload,
             $ = layui.jquery;
 
         table.render({
@@ -247,6 +244,7 @@
                     , "classificationId": data.classificationId
                     , "description": data.description
                     , "price": data.price
+                    , "password": ""
                 });
                 //捕获表单，打开弹层
                 formLayerId = layer.open({
@@ -264,7 +262,9 @@
 
         //修改表单提交事件
         form.on('submit(updateSub)', function (data) {
-            data.field.password = md5(data.field.password);
+            if (data.field.password != null && data.field.password != "" && data.field.password != undefined) {
+                data.field.password = md5(data.field.password);
+            }
             $.ajax({
                 type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
                 url: "/goods/addOrUpdateGoods",    //传输地址的URL
@@ -275,6 +275,7 @@
                 success: function (res) {
                     if (res.code == 401) {
                         layer.msg("账号已过期，请重新登陆");
+                        $("#updataForm")[0].reset();
                         form.render();
                     } else if (res.code == 200) {
                         layer.msg(res.msg);
@@ -282,9 +283,11 @@
                         table.reload('test', {
                             url: '/goods/getGoodsList'
                         });
+                        $("#updataForm")[0].reset();
                         form.render();
                     } else {
                         layer.msg(res.msg);
+                        $("#updataForm")[0].reset();
                         form.render();
                     }
                     layer.close(formLayerId);
@@ -318,6 +321,7 @@
                         layer.msg("操作失败!");
                     }
                     layer.close(formLayerId);
+                    $("#updataForm")[0].reset();
                     form.render();
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -358,7 +362,7 @@
                         if (res.data.deleteNum < ids.length) {
                             msg += "请检查未删除商品是否存在关联数据"
                         }
-                        layer.msg("已成功删除" + res.data.deleteNum + "个商品");
+                        layer.msg(msg);
                         //刷新页面
                         table.reload('test', {
                             url: '/goods/getGoodsList'
@@ -400,6 +404,30 @@
             });
         }
     });
+
+    function getUserInfo() {
+        $.ajax({
+            type: "GET", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
+            url: '/user/getUserInfo',    //传输地址的URL
+            data: {}, //data代表我们的数据  key -value类型的数据
+            dataType: 'JSON',
+            async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
+            traditional: true,
+            success: function (res) {
+                if (res.code == "200") {
+                    if (res.data.roleId != 1) {
+                        $("#barDemo").html("");
+                        $("#toolbarDemo").html("");
+                    }
+                } else {
+                    layer.msg(res.msg);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(typeof (errorThrown));
+            }
+        });
+    }
 </script>
 
 </body>

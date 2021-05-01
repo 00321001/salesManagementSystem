@@ -33,6 +33,7 @@ import java.util.List;
 public class UserController {
     private static final String[] FIELDS = {"id", "username", "roleId", "storeId", "realName", "email", "enableStatus", "createTime", "updateTime", "role", "store"};
     private static final String[] COLUMNS = {"id", "username", "role_id", "store_id", "real_name", "email", "enable_status", "create_time", "update_time"};
+    private static final String EMPTY_STRING_MD5 = "d41d8cd98f00b204e9800998ecf8427e";
     @Resource
     private IUserService userService;
 
@@ -153,7 +154,7 @@ public class UserController {
                 return ResJson.FAIL_RETURN_JSON;
         }
         // 如果前台传入相关数据则修改相关数据
-        if (UtilTools.checkNull(user.getPassword())) {
+        if (UtilTools.checkNull(user.getPassword()) && !user.getPassword().equals(EMPTY_STRING_MD5)) {
             wrapper.set("password", UtilTools.passwordEncryption(user.getPassword(), user.getUsername()));
         }
         if (UtilTools.checkNull(user.getRealName())) {
@@ -228,7 +229,7 @@ public class UserController {
     @ApiOperation(value = "获取当前登录用户信息接口")
     @GetMapping(value = "/getUserInfo")
     public String getUserInfo(HttpSession session) {
-        if (!UtilTools.checkLogin(session, 7)) {
+        if (!UtilTools.checkLogin(session, Constants.ROLE_ALL)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         QueryWrapper<User> wrapper = new QueryWrapper<>();

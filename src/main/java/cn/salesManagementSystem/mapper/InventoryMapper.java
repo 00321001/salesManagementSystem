@@ -4,6 +4,8 @@ import cn.salesManagementSystem.entity.Inventory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import java.util.List;
+
 /**
  * @author 闫铁鹰
  * @program salesManagementSystem
@@ -13,4 +15,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 
 public interface InventoryMapper extends BaseMapper<Inventory> {
     IPage<Inventory> getInventoryList(Integer storeId, IPage<Inventory> page);
+
+    List<Inventory> getInventoryList(Integer storeId);
 }

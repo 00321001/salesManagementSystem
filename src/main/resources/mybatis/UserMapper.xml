@@ -25,6 +25,6 @@
         SELECT tu.id, tu.username, tu.role_id, tu.store_id, tu.real_Name, tu.email, tu.enable_status, tu.create_time,
         tu.update_time, tr.name AS role, ts.name store
         FROM t_user tu LEFT JOIN t_role tr ON tu.role_id = tr.id LEFT JOIN t_store ts ON tu.store_id = ts.id WHERE 1=1
-        <if test="roleId != 1">AND tu.store_id = #{storeId}</if>
+        <if test="roleId != 1">AND tu.store_id = #{storeId} AND tu.role_id != 1</if>
     </select>
 </mapper>

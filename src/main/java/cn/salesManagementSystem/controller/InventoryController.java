@@ -46,9 +46,7 @@ public class InventoryController {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         User loginUser = this.userService.getById(session.getAttribute("userId").toString());
-        QueryWrapper<Inventory> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("storeId", loginUser.getStoreId());
-        List<Inventory> inventories = this.inventoryService.list(queryWrapper);
+        List<Inventory> inventories = this.inventoryService.getInventoryList(Integer.valueOf(loginUser.getStoreId().toString()));
         return JsonUtil.listToJson(FIELDS, inventories);
     }
 
@@ -60,7 +58,7 @@ public class InventoryController {
         }
         Integer storeId = null;
         if (!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN)) {
-            storeId = (Integer) session.getAttribute("storeId");
+            storeId = Integer.valueOf(session.getAttribute("storeId").toString());
         }
         IPage<Inventory> page = this.inventoryService.getInventoryList(storeId, new Page<>(current, size));
         return JsonUtil.listToLayJson(FIELDS, page.getRecords(), page.getTotal());

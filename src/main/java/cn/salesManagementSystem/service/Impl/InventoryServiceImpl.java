@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 /**
  * @author 闫铁鹰
@@ -21,5 +23,10 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
     @Override
     public IPage<Inventory> getInventoryList(Integer storeId, IPage<Inventory> page) {
         return this.baseMapper.getInventoryList(storeId, page);
+    }
+
+    @Override
+    public List<Inventory> getInventoryList(Integer storeId) {
+        return this.baseMapper.getInventoryList(storeId);
     }
 }
