@@ -18,7 +18,7 @@ import lombok.Data;
 @TableName(value = "t_goods")
 @ApiModel(value = "门店实体类")
 public class Goods {
-    @TableId(type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private String name;
     private String description;

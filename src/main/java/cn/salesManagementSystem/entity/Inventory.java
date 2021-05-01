@@ -1,6 +1,8 @@
 package cn.salesManagementSystem.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -16,6 +18,7 @@ import lombok.Data;
 @TableName(value = "ref_store_goods")
 @ApiModel(value = "商品库存实体类")
 public class Inventory {
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private Long storeId;
     private Long goodsId;
