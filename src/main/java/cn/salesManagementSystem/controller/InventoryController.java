@@ -53,13 +53,13 @@ public class InventoryController {
     }
 
     @ApiOperation("添加或修改库存信息接口")
-    @PostMapping("/saveOrUpdateInventory")
+    @PostMapping("/addOrUpdateInventory")
     public String saveOrUpdateInventory(HttpSession session, @RequestBody Inventory inventory) {
         if (!UtilTools.checkLogin(session, Constants.ROLE_SHOP_ADMIN)) {
             return ResJson.NO_LOGIN_RETURN_JSON;
         }
         User loginUser = this.userService.getById(session.getAttribute("userId").toString());
-        if (!loginUser.getStoreId().equals(inventory.getStoreId())) {
+        if (inventory.getStoreId() != null && !loginUser.getStoreId().equals(inventory.getStoreId())) {
             return ResJson.FAIL_RETURN_JSON;
         }
         inventory.setStoreId(loginUser.getStoreId());

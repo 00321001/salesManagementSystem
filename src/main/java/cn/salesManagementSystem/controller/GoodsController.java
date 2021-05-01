@@ -6,6 +6,7 @@ import cn.salesManagementSystem.utils.Constants;
 import cn.salesManagementSystem.utils.JsonUtil;
 import cn.salesManagementSystem.utils.ResJson;
 import cn.salesManagementSystem.utils.UtilTools;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -33,8 +34,20 @@ public class GoodsController {
     @Resource
     private IGoodsService goodsService;
 
+    @ApiOperation(value = "获取商品下拉列表接口")
+    @GetMapping("/getGoodsIdAndNameList")
+    public String getGoodsIdAndNameList(HttpSession session) {
+        if (!UtilTools.checkLogin(session, Constants.ROLE_ALL)) {
+            return ResJson.NO_LOGIN_RETURN_JSON;
+        }
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("id", "name");
+        List<Goods> list = this.goodsService.list(queryWrapper);
+        return JsonUtil.listToJson(new String[]{"id", "name"}, list);
+    }
+
     @ApiOperation(value = "获取商品列表接口")
-    @GetMapping("getGoodsList")
+    @GetMapping("/getGoodsList")
     public String getGoodsList(HttpSession session, @RequestParam Integer current, @RequestParam Integer size) {
         if (!UtilTools.checkLogin(session, Constants.ROLE_SUPER_ADMIN + Constants.ROLE_SHOP_ADMIN)) {
             return ResJson.NO_LOGIN_RETURN_JSON;

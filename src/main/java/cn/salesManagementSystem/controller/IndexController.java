@@ -79,4 +79,13 @@ public class IndexController {
             return "login";
         }
     }
+
+    @GetMapping("/inventoryManage")
+    public String inventoryManage(HttpSession session) {
+        if (UtilTools.checkLogin(session, Constants.ROLE_ALL)) {
+            return "inventoryManage";
+        } else {
+            return "login";
+        }
+    }
 }

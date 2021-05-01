@@ -8,7 +8,7 @@
         <result column="inventory" jdbcType="INTEGER" property="inventory"/>
         <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
         <result column="update_time" jdbcType="VARCHAR" property="updateTime"/>
-        <result column="store_name" javaType="VARCHAR" property="storeName"/>
+        <result column="store_name" jdbcType="VARCHAR" property="storeName"/>
         <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
     </resultMap>
 

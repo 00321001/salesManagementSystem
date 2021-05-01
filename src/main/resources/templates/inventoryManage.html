@@ -32,35 +32,19 @@
 
 <form action="" class="layui-form" enctype="multipart/form-data" id="addForm" lay-filter="add"
       style="display: none">
-    <div class="layui-form-item">
-        <label class="layui-form-label">商品名</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" lay-reqtext="商品名是必填项，岂能为空？" lay-verify="required"
-                   name="name"
-                   placeholder="商品名" type="text">
-        </div>
-    </div>
     <div class="layui-inline">
-        <label class="layui-form-label">商品分类</label>
+        <label class="layui-form-label">商品</label>
         <div class="layui-input-inline">
-            <select id="goodsClassSelectAdd" lay-search="" lay-verify="required" name="classificationId">
+            <select id="goodsSelectAdd" lay-search="" lay-verify="required" name="goodsId">
             </select>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">商品描述</label>
+        <label class="layui-form-label">数量</label>
         <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" lay-reqtext="商品描述是必填项，岂能为空？" lay-verify="required"
-                   name="description"
-                   placeholder="商品描述" type="text">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">商品价格</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" lay-reqtext="商品价格是必填项，岂能为空？" lay-verify="required"
-                   name="price"
-                   placeholder="商品价格" type="text">
+            <input autocomplete="off" class="layui-input" lay-reqtext="数量描述是必填项，岂能为空？" lay-verify="required"
+                   name="inventory"
+                   placeholder="数量" type="text">
         </div>
     </div>
     <div class="layui-input-block">
@@ -81,38 +65,21 @@
         </div>
     </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">商品名</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" lay-reqtext="商品名是必填项，岂能为空？" lay-verify="required"
-                   name="name"
-                   placeholder="商品名" type="text">
-        </div>
-    </div>
     <div class="layui-inline">
-        <label class="layui-form-label">商品分类</label>
+        <label class="layui-form-label">商品</label>
         <div class="layui-input-inline">
-            <select id="goodsClassSelectEdit" lay-search="" lay-verify="required" name="classificationId">
+            <select id="goodsSelectEdit" lay-search="" lay-verify="required" name="goodsId">
             </select>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">商品描述</label>
+        <label class="layui-form-label">数量</label>
         <div class="layui-input-block">
             <input autocomplete="off" class="layui-input" lay-reqtext="商品描述是必填项，岂能为空？" lay-verify="required"
-                   name="description"
-                   placeholder="商品描述" type="text">
+                   name="inventory"
+                   placeholder="数量" type="text">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">商品价格</label>
-        <div class="layui-input-block">
-            <input autocomplete="off" class="layui-input" lay-reqtext="商品价格是必填项，岂能为空？" lay-verify="required"
-                   name="price"
-                   placeholder="商品价格" type="text">
-        </div>
-    </div>
-
     <div class="layui-form-item" id="sub">
         <button class="layui-btn" id="updateSub" lay-filter="updateSub" lay-submit style="margin-left:220px"
                 type="button">
@@ -178,7 +145,7 @@
                     break;
                 case 'add': {
                     //捕获表单，打开弹层
-                    getGoodClassifList("goodsClassSelectAdd");
+                    getGoodsList("goodsSelectAdd");
                     form.render();
                     formLayerId = layer.open({
                         type: 1,
@@ -207,7 +174,7 @@
                 layer.confirm('真的删除该商品么', function (index) {
                     $.ajax({
                         type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                        url: '/goods/deleteGoods',    //传输地址的URL
+                        url: '/inventory/deleteInventory',    //传输地址的URL
                         data: data, //data代表我们的数据  key -value类型的数据
                         dataType: 'JSON',
                         async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
@@ -219,7 +186,7 @@
                                 layer.msg(res.msg);
                                 //刷新页面
                                 table.reload('test', {
-                                    url: '/goods/getGoodsList'
+                                    url: '/inventory/getInventoryList'
                                 });
                             } else {
                                 layer.msg(res.msg);
@@ -233,7 +200,7 @@
                     layer.close(index);
                 });
             } else if (obj.event === 'edit') {
-                getGoodClassifList("goodsClassSelectEdit");
+                getGoodsList("goodsSelectEdit");
                 form.render()
                 form.val('update', {
                     "id": data.id // "name": "value"
@@ -258,10 +225,9 @@
 
         //修改表单提交事件
         form.on('submit(updateSub)', function (data) {
-            data.field.password = md5(data.field.password);
             $.ajax({
                 type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                url: "/goods/addOrUpdateGoods",    //传输地址的URL
+                url: "/inventory/addOrUpdateInventory",    //传输地址的URL
                 data: JSON.stringify(data.field), //data代表我们的数据  key -value类型的数据
                 contentType: "application/json",
                 dataType: 'JSON',
@@ -274,7 +240,7 @@
                         layer.msg(res.msg);
                         //刷新页面
                         table.reload('test', {
-                            url: '/goods/getGoodsList'
+                            url: '/inventory/getInventoryList'
                         });
                         form.render();
                     } else {
@@ -291,10 +257,9 @@
         });
         //添加表单提交事件
         form.on('submit(addSub)', function (data) {
-            data.field.password = md5(data.field.password);
             $.ajax({
                 type: "post", //指定提交的类型
-                url: "/goods/addOrUpdateGoods",    //传输地址的URL
+                url: "/inventory/addOrUpdateInventory",    //传输地址的URL
                 data: JSON.stringify(data.field), //data代表我们的数据  key -value类型的数据
                 dataType: 'JSON',
                 contentType: "application/json",
@@ -304,7 +269,7 @@
                     if (res.code == 200) {
                         layer.msg("添加成功！！");
                         table.reload('test', {
-                            url: '/goods/getGoodsList'
+                            url: '/inventory/getInventoryList'
                         });
                     } else if (res.code == 20001) {
                         layer.msg("已存在相同名字的商店");
@@ -338,7 +303,7 @@
         function multiDelete(ids) {
             $.ajax({
                 type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                url: '/goods/multiDeleteGoods',    //传输地址的URL
+                url: '/inventory/multiDeleteInventory',    //传输地址的URL
                 data: {"ids": ids}, //data代表我们的数据  key -value类型的数据
                 dataType: 'JSON',
                 async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
@@ -355,7 +320,7 @@
                         layer.msg("已成功删除" + res.data.deleteNum + "个商品");
                         //刷新页面
                         table.reload('test', {
-                            url: '/goods/getGoodsList'
+                            url: '/inventory/getInventoryList'
                         });
                     } else {
                         layer.msg(res.msg);
@@ -368,10 +333,10 @@
             });
         }
 
-        function getGoodClassifList(id) {
+        function getGoodsList(id) {
             $.ajax({
                 type: "get", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
-                url: "/goodsClassification/getGoodsClassificationIdAndDescriptionList",    //传输地址的URL
+                url: "/goods/getGoodsIdAndNameList",    //传输地址的URL
                 data: {}, //data代表我们的数据  key -value类型的数据
                 dataType: 'JSON',
                 async: false, //success和error代表是否返回成功，既后台给前台传输数据是否成功
@@ -380,7 +345,7 @@
                     if (res.code == 200) {
                         var html = '<option value="">请选择一个分类</option>';
                         for (var i = 0; i < res.data.length; i++) {
-                            html += '<option value="' + res.data[i].id + '">' + res.data[i].description + '</option>';
+                            html += '<option value="' + res.data[i].id + '">' + res.data[i].name + '</option>';
                         }
                         $("#" + id).html(html);
                         form.render("select");
@@ -393,6 +358,7 @@
                 }
             });
         }
+
     });
 </script>
 
