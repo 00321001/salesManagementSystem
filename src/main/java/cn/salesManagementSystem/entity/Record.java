@@ -1,6 +1,7 @@
 package cn.salesManagementSystem.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -22,4 +23,10 @@ public class Record {
     private Long goodsId;
     private Integer recordStatus;
     private String createTime;
+    @TableField(exist = false)
+    private String storeName;
+    @TableField(exist = false)
+    private String userName;
+    @TableField(exist = false)
+    private String goodsName;
 }

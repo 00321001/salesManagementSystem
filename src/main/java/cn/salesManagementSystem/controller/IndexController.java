@@ -88,4 +88,13 @@ public class IndexController {
             return "login";
         }
     }
+
+    @GetMapping("/recordManage")
+    public String recordManage(HttpSession session) {
+        if (UtilTools.checkLogin(session, Constants.ROLE_ALL)) {
+            return "recordManage";
+        } else {
+            return "login";
+        }
+    }
 }

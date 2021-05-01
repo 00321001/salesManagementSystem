@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author 闫铁鹰
@@ -32,11 +33,24 @@ import java.util.Arrays;
 @Log4j
 @Api(tags = "库存管理相关接口")
 public class InventoryController {
-    public static final String[] FIELDS = {"id", "store_id", "goods_id", "inventory", "create_time", "update_time"};
+    public static final String[] FIELDS = {"id", "storeId", "goodsId", "inventory", "createTime", "updateTime", "goodsName", "storeName"};
     @Resource
     IInventoryService inventoryService;
     @Resource
     IUserService userService;
+
+    @GetMapping("/getInventorySelectList")
+    @ApiOperation("获取库存下拉列表接口")
+    public String getInventorySelectList(HttpSession session) {
+        if (!UtilTools.checkLogin(session, Constants.ROLE_ALL)) {
+            return ResJson.NO_LOGIN_RETURN_JSON;
+        }
+        User loginUser = this.userService.getById(session.getAttribute("userId").toString());
+        QueryWrapper<Inventory> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("storeId", loginUser.getStoreId());
+        List<Inventory> inventories = this.inventoryService.list(queryWrapper);
+        return JsonUtil.listToJson(FIELDS, inventories);
+    }
 
     @GetMapping("/getInventoryList")
     @ApiOperation("获取库存列表接口")
