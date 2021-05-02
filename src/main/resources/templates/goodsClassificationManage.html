@@ -207,7 +207,6 @@
 
         //修改表单提交事件
         form.on('submit(updateSub)', function (data) {
-            data.field.password = md5(data.field.password);
             $.ajax({
                 type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
                 url: "/goodsClassification/addOrUpdateGoodsClassification",    //传输地址的URL

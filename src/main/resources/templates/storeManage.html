@@ -8,7 +8,6 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
     <link href="../static/layui/css/layui.css" media="all" rel="stylesheet">
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-    <script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.js"></script>
 </head>
 <body>
 
@@ -226,7 +225,6 @@
 
         //修改表单提交事件
         form.on('submit(updateSub)', function (data) {
-            data.field.password = md5(data.field.password);
             $.ajax({
                 type: "POST", //指定提交的类型 get对应 doGet()方法，post--->doPost()方法
                 url: "/store/addOrUpdateStore",    //传输地址的URL
@@ -259,7 +257,6 @@
         });
         //添加表单提交事件
         form.on('submit(addSub)', function (data) {
-            data.field.password = md5(data.field.password);
             $.ajax({
                 type: "post", //指定提交的类型
                 url: "/store/addOrUpdateStore",    //传输地址的URL
